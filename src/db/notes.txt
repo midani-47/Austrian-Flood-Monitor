@@ -1,0 +1,8 @@
+I will collect my notes and questions in this file.
+
+Notes:
+- I created the tables based on the attributes that can be found in the second link from the Project Outline
+
+
+Questions:
+- Do we have to check the email with SQL code somehow or is that the backend's problem?
