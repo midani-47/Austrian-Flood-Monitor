@@ -2,12 +2,7 @@ I will collect my notes and questions in this file.
 
 Notes:
 - I created the tables based on the attributes that can be found in the second link from the Project Outline
-- I am not sure if we need a docker-compose file, since I still do not know how this whole thing will work
-  --> (My initial idea was that we will run a docker container)
 
 
 Questions:
 - Do we have to check the email with SQL code somehow or is that the backend's problem?
-- Do we even need a table called Locations or is that unnecessary?
-- Do we need the emergency response planning table?
-- What other tables do we need?

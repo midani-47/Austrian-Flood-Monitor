@@ -17,13 +17,13 @@ CREATE TABLE IF NOT EXISTS Locations (
     dbmsnr INTEGER UNIQUE,                       
     hzbnr INTEGER UNIQUE,                        
     name VARCHAR(255) NOT NULL,                  
-    gewaesser VARCHAR(255),                      
-    hydrodienst VARCHAR(255),                    
-    lat NUMERIC(9, 6),                           
-    lon NUMERIC(9, 6),                           
-    geometry GEOMETRY,                           
-    country VARCHAR(50),                         
-    internet TEXT,                               
+    water_body_name VARCHAR(255),                      
+    mp_operator VARCHAR(255), -- mp stands for measuring point
+    lat NUMERIC(9, 6), -- up to 9 digits and up to 6 decimal places
+    lon NUMERIC(9, 6),
+    internet TEXT,
+    country TEXT,
+    mp_geometry GEOMETRY, -- mp stands for measuring point
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -32,29 +32,15 @@ CREATE TABLE IF NOT EXISTS Water_Levels (
     water_level_id SERIAL PRIMARY KEY,
     location_id INTEGER NOT NULL REFERENCES Locations(location_id) ON DELETE CASCADE,
     measurement_time TIMESTAMP NOT NULL,
-    value NUMERIC(10, 2) NOT NULL,               
-    unit VARCHAR(50) NOT NULL,                   
-    parameter VARCHAR(100),                      
-    forecast BOOLEAN DEFAULT FALSE,              
-    total_code INTEGER,                          
-    alert_level VARCHAR(20),                     
-    hq30 BOOLEAN DEFAULT FALSE,                 
-    hq100 BOOLEAN DEFAULT FALSE,                
-    all_time_high BOOLEAN DEFAULT FALSE,         
+    value_at_time NUMERIC(10, 2) NOT NULL,
+    unit VARCHAR(50) NOT NULL,
+    parameter VARCHAR(100),
+    forecast BOOLEAN DEFAULT FALSE,
+    total_code INTEGER,
+    alert_level VARCHAR(20),
+    hq30 BOOLEAN DEFAULT FALSE,
+    hq100 BOOLEAN DEFAULT FALSE,
+    all_time_high BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- I am not sure if this is needed
 );
 
--- Table for Users
-CREATE TABLE IF NOT EXISTS Users (
-    user_id SERIAL PRIMARY KEY,               -- Unique user ID, auto-incremented
-    email VARCHAR(255) UNIQUE NOT NULL,       -- Email address, must be unique
-    username VARCHAR(100) UNIQUE NOT NULL,    -- Username, must be unique
-    password_hash TEXT NOT NULL,              -- Hashed password
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- I am not sure if this is needed
-);
-
--- Table for Emergency Reports
-
-
-
--- Table for emergency response planning
