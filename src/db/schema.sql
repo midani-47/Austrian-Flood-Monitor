@@ -55,3 +55,14 @@ CREATE TABLE IF NOT EXISTS Water_Level_History (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+-- Table for Water Levels
+CREATE TABLE IF NOT EXISTS User (
+    user_id SERIAL PRIMARY KEY,                     -- Unique identifier for each user
+    email VARCHAR(255) UNIQUE NOT NULL,             -- Email address, unique and required
+    hashed_passw VARCHAR(255) NOT NULL,             -- Hashed password (255 to accommodate long hashes)
+    phone_num VARCHAR(15),                          -- Phone number (optional, allows for country codes)
+    user_address TEXT,                              -- User's address (text for flexibility in length, can use VARCHAR(255) if needed)
+    perm_level VARCHAR(15) DEFAULT 'user' CHECK (perm_level IN ('user', 'admin')),        -- Permission level (right now it can be user or admin)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp of user creation --> may be used for statistics (if not, it can be easily deleted)
+)
