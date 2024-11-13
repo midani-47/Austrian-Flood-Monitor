@@ -1,0 +1,66 @@
+name: AFM Test Workflow
+
+# Trigger the workflow on every push to any branch
+on:
+  push:
+    branches:
+      - '**'  # Triggers on all branches
+  pull_request:
+    branches:
+      - '**'  # Triggers on all pull requests for all branches
+  repository_dispatch:
+    types: [run-tests]  # Use a custom event type like 'run-tests'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the repository
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js environment (adjust version as needed)
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Adjust Node.js version if needed
+
+    # Step 3: Install dependencies
+ #   - name: Install dependencies
+ #     run: npm install  # (why isn't it specifying the install statement?) # or use yarn if your project requires it
+
+    # Step 4: Run Linter for code quality # NOT SURE HOW STRICT THIS FUNCTIONALITY IS
+    #- name: Run Linter
+     # run: npm run lint
+
+    # Step 5: Run Security Checks #
+    - name: Run Security Checks
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript  # Adjust based on primary language used in the project
+
+    # Step 6: Run Unit Tests
+    - name: Run Unit Tests
+      run: npm test  # Adjust based on your testing framework
+
+    # Step 6.2: Run Coverage
+    - name: Run Coverage
+      run: npm run coverage  # or "npm run test -- --coverage" if using Jest
+
+
+    # Step 7: Upload Coverage Report to Codecov 
+ #   - name: Upload Coverage to Codecov
+  #    uses: codecov/codecov-action@v3
+   #   with:
+    #    token: ${{ secrets.CODECOV_TOKEN }}  # Store Codecov token in GitHub Secrets #any point?
+
+
+    # Additional steps for feature-specific and compliance tests can go here.
+
+    # Step 7.2: Upload Coverage Report to Codecov
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: test-results/  # Adjust path based on where test reports are saved
