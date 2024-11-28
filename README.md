@@ -18,7 +18,7 @@ The **Austrian Flood Monitoring and Emergency Response System (AFM)** is a web p
 
 | Component              | Technology                    |
 |------------------------|-------------------------------|
-| Backend                | Python, Django                |
+| Backend                | Python, Flask                 |
 | Frontend               | Node.js                       |
 | Database               | PostgreSQL, Neo4j (if needed) |
 | Geospatial Visualization | Mapbox/Leaflet, GIS standards |
