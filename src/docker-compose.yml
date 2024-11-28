@@ -1,6 +1,21 @@
-version: '3.8'
+version: '3.9'
 
 services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: afm_flask_app
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: development
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
   db:
     image: postgres:14
     container_name: afm_postgres
@@ -12,7 +27,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
 volumes:
   postgres_data:
