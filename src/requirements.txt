@@ -1,2 +1,5 @@
 flask
 psycopg2-binary
+
+#npm
+leaflet

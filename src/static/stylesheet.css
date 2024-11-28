@@ -1,9 +1,145 @@
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 2em;
+/* General Styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent scrollbars */
+    font-family: 'Poppins', sans-serif; /* Apply globally */
 }
 
+/* Navbar styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
+    display: flex;
+    align-items: center; /* Vertically align items in the navbar */
+    justify-content: space-between;
+    z-index: 1000; /* Ensure it overlays the map */
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: white;
+    font-family: 'Poppins', sans-serif; /* Ensure navbar uses Poppins */
+}
+
+/* Logo container */
+.logo {
+    flex-grow: 1; /* Center the logo by making it take up space */
+    display: flex;
+    justify-content: center; /* Horizontally center the image */
+    align-items: center; /* Vertically align the image */
+}
+
+/* Logo image */
+.logo img {
+    height: 120px; /* Adjust the height of the logo */
+    padding-top: 12px;
+    width: auto;  /* Maintain aspect ratio */
+    vertical-align: middle;
+}
+
+/* Right section of the navbar */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Spacing between the button and the link */
+}
+
+/* Report Flood button */
+.report-button {
+    background-color: rgb(201, 6, 43); /* Red color for emphasis */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif; /* Use Poppins for consistency */
+    font-weight: 400; /* Bold text for emphasis */
+    transition: background-color 0.3s ease;
+}
+
+.report-button:hover {
+    background-color: rgb(182, 13, 44); /* Darker red on hover */
+}
+
+/* Login link */
+.login-link {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif; /* Use Poppins for consistency */
+    font-weight: 400;
+    padding: 8px 15px;
+    border: 1px solid white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.login-link:hover {
+    background-color: white;
+    color: black;
+}
+
+/* Map container */
 #map {
-    height: 100vh;
-    width: 100vw;
+    position: absolute;
+    top: 0px; /* Align below the navbar */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%; /* Full height minus navbar height */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #f0f0f0; /* Optional background color to ensure no white shows */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.dropdown-content {
+    display: none; /* Hide by default */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: 'Poppins', sans-serif;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd; /* Change background on hover */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* Show dropdown content on hover */
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #555; /* Darker button background on hover */
 }
