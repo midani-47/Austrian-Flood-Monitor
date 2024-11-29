@@ -15,7 +15,7 @@ html, body {
     left: 0;
     width: 100%;
     height: 60px;
-    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)); /* Fading effect */
     display: flex;
     align-items: center; /* Vertically align items in the navbar */
     justify-content: space-between;
@@ -23,8 +23,9 @@ html, body {
     padding: 0 20px;
     box-sizing: border-box;
     color: white;
-    font-family: 'Poppins', sans-serif; /* Ensure navbar uses Poppins */
+    font-family: 'Poppins', sans-serif; /* Consistent font */
 }
+
 
 /* Logo container */
 .logo {
