@@ -1,8 +1,13 @@
-I will collect my notes and questions in this file.
 
-Notes:
-- I created the tables based on the attributes that can be found in the second link from the Project Outline
+In case of emergency run this for the docker: (to reset the cache of the docker)
+docker-compose down
+docker volume rm src_postgres_data
+docker-compose up --build -d
+docker exec -it afm_postgres psql -U afm_user -d AFM                   # manually check the DB
+\dt
 
+If you want to CLEAR a table use this:
+TRUNCATE TABLE FloodReport;
 
-Questions:
-- Do we have to check the email with SQL code somehow or is that the backend's problem?
+If you DROPPED a table CREATE it back up with:
+ \i /docker-entrypoint-initdb.d/schema.sql

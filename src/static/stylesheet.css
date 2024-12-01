@@ -1,9 +1,115 @@
-body{
+/* General Styling */
+body {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 2em;
+    font-size: 1em;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-#map {
-    height: 100vh;
-    width: 100vw;
+/* Form Container Styling */
+.form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto; /* Ensure balanced margins on both sides */
+}
+
+/* Form Header */
+h1 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Labels for Form Fields */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Form Inputs, Textareas, Selects, and Buttons */
+form input,
+form textarea,
+form select,
+form button {
+    width: 100%; /* Ensure full width with consistent padding */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+/* Highlight focused fields */
+form input:focus,
+form textarea:focus,
+form select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Textarea: Fixed Size and Non-Resizable */
+form textarea {
+    resize: none;
+    height: 120px;
+}
+
+/* Button Styling */
+form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+form button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* File Upload Section */
+#file-upload-container {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically align items */
+    gap: 10px; /* Space between file input and trash icon */
+    margin-right: 0; /* Remove extra right margin */
+}
+
+#picture {
+    flex-grow: 1; /* Allow file input to fill available space */
+    min-width: 0; /* Prevent overflow */
+}
+
+/* Trash Icon Styling */
+#remove-file-icon {
+    color: #c70f0f; /* Icon color */
+    cursor: pointer;
+    font-size: 1.5rem; /* Adjust icon size */
+    line-height: 1; /* Prevent additional vertical spacing */
+    align-self: center; /* Ensure vertical alignment with file input */
+    /*margin-left: auto; !* Push icon to the right edge *!*/
+    margin: 1px 1px 15px 1px;
+}
+
+#remove-file-icon:hover {
+    color: #ff0000;
+    transform: scale(1.2); /* Slightly enlarge icon on hover */
+}
+
+/* Hover Effect for Form Container */
+.form-container:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
