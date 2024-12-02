@@ -31,3 +31,4 @@ map.setMaxZoom(11); // Prevent excessive zooming in
 // Add a marker for the center of Austria
 // This is just a demo marker
 L.marker([47.5162, 14.5501]).addTo(map).bindPopup('Center of Austria').openPopup();
+
