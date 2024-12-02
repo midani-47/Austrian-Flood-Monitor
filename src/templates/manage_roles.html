@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Roles</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Manage Users Roles</h1>
+        </div>
+        <table>
+              <thead>
+                     <tr>
+                         <th>User ID</th>
+                         <!-- <th>Name</th> -->
+                         <th>Email</th>
+                         <th>Current Role</th>
+                         <th>Change Role</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.user_id }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.perm_level }}</td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="user_id" value="{{ user.user_id }}">
+                                <select name="perm_level">
+                                    <option value="user" {% if user.perm_level == 'user' %}selected{% endif %}>User</option>
+                                    <option value="admin" {% if user.perm_level == 'admin' %}selected{% endif %}>Admin</option>
+                                    <option value="moderator" {% if user.perm_level == 'moderator' %}selected{% endif %}>Moderator</option>
+                                </select>
+                                <button type="submit">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                      {% for category, message in messages %}
+                        <div class="{{ 'success-message' if category == 'success' else 'error-message' }}">{{ message }}</div>
+                      {% endfor %}
+                    {% endif %}
+                  {% endwith %}
+                 </tbody>
+        </table>
+        <!-- <p><a href="{{ url_for('Users.manage_roles') }}">Manage Roles</a></p>
+        <br> -->
+        <p><a href="{{ url_for('app_home') }}" class="btn btn-primary">Home</a></p>
+
+        </div>
+
+</body>
+</html>
