@@ -1,3 +1,4 @@
+--schema.sql--
 -- Create the AFM database if it doesn't already exist
 DO
 $do$
@@ -10,7 +11,6 @@ $do$;
 
 -- Switch to the AFM database
 \c AFM;
-
 -- -- THIS IS THE CLEANUP plz keep me here
 -- DO $$ DECLARE
 --     r RECORD;
@@ -19,9 +19,6 @@ $do$;
 --         EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
 --     END LOOP;
 -- END $$;
-
-
-
 
 
 -- Table for Water Levels --> created based on the possible attributes that can be found in the second link
@@ -86,13 +83,20 @@ CREATE TABLE FloodReport (
 -- );
 
 
--- Table for Users
-CREATE TABLE IF NOT EXISTS Users (
+-- Table for Water Levels
+CREATE TABLE IF NOT EXISTS "Users" (
     user_id SERIAL PRIMARY KEY,                     -- Unique identifier for each user
     email VARCHAR(255) UNIQUE NOT NULL,             -- Email address, unique and required
     hashed_passw VARCHAR(255) NOT NULL,             -- Hashed password (255 to accommodate long hashes)
     phone_num VARCHAR(15),                          -- Phone number (optional, allows for country codes)
     user_address TEXT,                              -- User's address (text for flexibility in length, can use VARCHAR(255) if needed)
-    perm_level VARCHAR(15) DEFAULT 'user' CHECK (perm_level IN ('user', 'admin')),        -- Permission level (right now it can be user or admin)
+    perm_level VARCHAR(15) DEFAULT 'user' CHECK (perm_level IN ('user', 'admin', 'moderator')),        -- Permission level (right now it can be user or admin)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp of user creation --> may be used for statistics (if not, it can be easily deleted)
-)
+);
+
+-- Insert a default admin user
+Insert into "Users" (email, hashed_passw, perm_level) 
+values ('admin@example.com', 'pbkdf2:sha256:1000000$p05Dwd3ap9ogMdkI$7f4e1fcba3da1beec50f690cc57047c4ee81afde904dadb0632a534ed555e3d2', 'admin')
+
+-- Log a message to indicate that the schema.sql file has finished executing
+\echo 'Finished executing schema.sql'
