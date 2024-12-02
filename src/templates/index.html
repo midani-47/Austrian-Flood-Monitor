@@ -2,19 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylesheet.css">
-    <title>Austrian Flood Monitoring System</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    />
-    <script
-      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Leaflet Map with Navbar</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/stylesheet.css">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="dropdown">
+            <button class="dropbtn">Menu</button>
+            <div class="dropdown-content">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+
+        <div class="logo">
+            <img src="../static/AFM_logo.png" alt="AFM Logo">
+        </div>
+
+        <div class="navbar-right">
+            <button class="report-button" onclick="location.href='../templates/report.html';">Report Flood</button>
+            <a href="../templates/login.html" class="login-link">Login</a>
+        </div>
+    </nav>
+
+    <!-- Map -->
     <div id="map"></div>
-    <script src="index.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="../scripts/index.js"></script>
 </body>
 </html>
