@@ -27,53 +27,51 @@ html, body {
 }
 
 
-/* Logo container */
 .logo {
-    flex-grow: 1; /* Center the logo by making it take up space */
+    flex-grow: 1; 
     display: flex;
-    justify-content: center; /* Horizontally center the image */
-    align-items: center; /* Vertically align the image */
+    justify-content: center; 
+    align-items: center; 
 }
 
-/* Logo image */
 .logo img {
-    height: 120px; /* Adjust the height of the logo */
+    height: 120px; 
     padding-top: 12px;
-    width: auto;  /* Maintain aspect ratio */
+    width: auto;  
     vertical-align: middle;
 }
 
-/* Right section of the navbar */
+
 .navbar-right {
     display: flex;
     align-items: center;
-    gap: 15px; /* Spacing between the button and the link */
+    gap: 15px; 
 }
 
-/* Report Flood button */
+
 .report-button {
-    background-color: rgb(201, 6, 43); /* Red color for emphasis */
+    background-color: rgb(201, 6, 43); 
     color: white;
     border: none;
     border-radius: 5px;
     padding: 8px 15px;
     font-size: 14px;
     cursor: pointer;
-    font-family: 'Poppins', sans-serif; /* Use Poppins for consistency */
-    font-weight: 400; /* Bold text for emphasis */
+    font-family: 'Poppins', sans-serif; 
+    font-weight: 400; 
     transition: background-color 0.3s ease;
 }
 
 .report-button:hover {
-    background-color: rgb(182, 13, 44); /* Darker red on hover */
+    background-color: rgb(182, 13, 44); 
 }
 
-/* Login link */
+
 .login-link {
     color: white;
     text-decoration: none;
     font-size: 14px;
-    font-family: 'Poppins', sans-serif; /* Use Poppins for consistency */
+    font-family: 'Poppins', sans-serif; 
     font-weight: 400;
     padding: 8px 15px;
     border: 1px solid white;
@@ -86,18 +84,17 @@ html, body {
     color: black;
 }
 
-/* Map container */
 #map {
     position: absolute;
-    top: 0px; /* Align below the navbar */
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    height: 100%; /* Full height minus navbar height */
+    height: calc(100%);
     width: 100%;
     margin: 0;
     padding: 0;
-    background: #f0f0f0; /* Optional background color to ensure no white shows */
+    background: #f0f0f0;
 }
 
 .dropdown {
@@ -134,13 +131,13 @@ html, body {
 }
 
 .dropdown-content a:hover {
-    background-color: #ddd; /* Change background on hover */
+    background-color: #ddd; 
 }
 
 .dropdown:hover .dropdown-content {
-    display: block; /* Show dropdown content on hover */
+    display: block; 
 }
 
 .dropdown:hover .dropbtn {
-    background-color: #555; /* Darker button background on hover */
+    background-color: #555; 
 }
