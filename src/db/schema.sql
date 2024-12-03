@@ -84,7 +84,7 @@ CREATE TABLE FloodReport (
 
 
 -- Table for Water Levels
-CREATE TABLE IF NOT EXISTS "Users" (
+CREATE TABLE IF NOT EXISTS Users (
     user_id SERIAL PRIMARY KEY,                     -- Unique identifier for each user
     email VARCHAR(255) UNIQUE NOT NULL,             -- Email address, unique and required
     hashed_passw VARCHAR(255) NOT NULL,             -- Hashed password (255 to accommodate long hashes)
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS "Users" (
 );
 
 -- Insert a default admin user
-Insert into "Users" (email, hashed_passw, perm_level) 
+Insert into Users (email, hashed_passw, perm_level) 
 values ('admin@example.com', 'pbkdf2:sha256:1000000$p05Dwd3ap9ogMdkI$7f4e1fcba3da1beec50f690cc57047c4ee81afde904dadb0632a534ed555e3d2', 'admin')
 
 -- Log a message to indicate that the schema.sql file has finished executing

@@ -47,7 +47,7 @@ def manage_roles():
             conn = get_db_connection()
             cur = conn.cursor()
             cur.execute(
-                'UPDATE "Users" SET perm_level = %s WHERE user_id = %s',
+                'UPDATE Users SET perm_level = %s WHERE user_id = %s',
                 (new_role, user_id)
             )
             conn.commit()
@@ -62,7 +62,7 @@ def manage_roles():
     try:
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute('SELECT user_id, email, perm_level FROM "Users"')
+        cur.execute('SELECT user_id, email, perm_level FROM Users')
         users = cur.fetchall()
         cur.close()
         conn.close()
@@ -95,7 +95,7 @@ def register_user():
             cur = conn.cursor()
             # Insert user into the Users table
             cur.execute(
-                'INSERT INTO "Users" (email, hashed_passw, phone_num, user_address) VALUES (%s, %s, %s, %s)',
+                'INSERT INTO Users (email, hashed_passw, phone_num, user_address) VALUES (%s, %s, %s, %s)',
                 (email, hashed_password, phone_num, user_address)
             )
             conn.commit()
@@ -135,7 +135,7 @@ def login_user():
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)  # Use DictCursor here
         
         # Query the Users table by email
-        cur.execute('SELECT * FROM "Users" WHERE email = %s', (email,))
+        cur.execute('SELECT * FROM Users WHERE email = %s', (email,))
         user = cur.fetchone()
         
         # Debug: Log user data from database (remove later)
@@ -169,7 +169,7 @@ def logout_user():
 def update_user_role(user_id, perm_level):
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("UPDATE \"Users\" SET perm_level = %s WHERE user_id = %s", (perm_level, user_id))
+    cur.execute("UPDATE Users SET perm_level = %s WHERE user_id = %s", (perm_level, user_id))
     conn.commit()
     cur.close()
     conn.close()
@@ -177,7 +177,7 @@ def update_user_role(user_id, perm_level):
 def get_all_users():
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=DictCursor)
-    cur.execute("SELECT user_id, email, perm_level FROM \"Users\"")
+    cur.execute("SELECT user_id, email, perm_level FROM Users")
     users = cur.fetchall()
     cur.close()
     conn.close()
