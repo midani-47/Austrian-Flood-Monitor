@@ -72,7 +72,6 @@ def manage_roles():
         flash(f"An error occurred: {e}", 'error')
         return redirect(url_for('app_home'))
 
-
 def register_user():
     if request.method == 'POST':
         email = request.form['email']
