@@ -21,14 +21,17 @@ def get_db_connection():
     return conn
 
 
+
+# Checks for MINIMUM role level
 def require_role(role):
     def decorator(f):
         @wraps(f)
         def wrapped(*args, **kwargs):
-            if 'perm_level' not in session or session['perm_level'] != role:
-                print(f"Access denied: User role is {session.get('perm_level', None)}, required role is {role}")
+            user_role = int(session.get('perm_level', 0))
+            if user_role < role:
+                print(f"Access denied: User role is {user_role}, required minimum role is {role}")
                 flash('You do not have permission to access this page.', 'error')
-                return redirect(url_for('app_login'))
+                return redirect(url_for('app_home'))
             return f(*args, **kwargs)
         return wrapped
     return decorator
@@ -109,11 +112,9 @@ def register_user():
     return render_template('register.html')
 
 def home_page():
-    if 'user_id' not in session:
-        flash('Please log in to access the home page.', 'error')
-        return redirect(url_for('app_login'))
 
-    return render_template('home.html', perm_level=session.get('perm_level', 'user'))
+    perm_level = int(session.get('perm_level', 0))
+    return render_template('index.html', perm_level=perm_level)
 
 
 @users_bp.route('/login', methods=['GET', 'POST'])
@@ -147,7 +148,7 @@ def login_user():
         if user and check_password_hash(user['hashed_passw'], password):
             session['user_id'] = user['user_id']
             session['email'] = user['email']
-            session['perm_level'] = user['perm_level']
+            session['perm_level'] = int(user['perm_level'])
             
             flash('Login successful!', 'success')
             return redirect(url_for('app_home'))  # Redirect to the home page

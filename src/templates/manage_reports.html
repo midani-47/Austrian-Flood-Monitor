@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderator View</title>
+    <link rel="stylesheet" href="../static/stylesheet.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../static/AFM_logo.png" alt="AFM Logo">
+        </div>
+        <div class="navbar-right">
+            <a href="/logout" class="login-link">Logout</a>
+        </div>
+    </nav>
+    
+    <div class="content">
+        <h1>Moderator View</h1>
+        
+        <!-- Display reports -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Location</th>
+                    <th>Email</th>
+                    <th>Description</th>
+                    <th>Severity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td>{{ report.ID }}</td>
+                    <td>{{ report.Location }}</td>
+                    <td>{{ report.AssociatedEmail }}</td>
+                    <td>{{ report.Description }}</td>
+                    <td>{{ report.Severity }}</td>
+                    <td>
+                        <button onclick="verifyReport({{ report.ID }})">Verify</button>
+                        <button onclick="deleteReport({{ report.ID }})">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+</html>
