@@ -15,7 +15,7 @@
               <thead>
                      <tr>
                          <th>User ID</th>
-                         <!-- <th>Name</th> -->
+                         <!-- <th>Name</th> No name?-->
                          <th>Email</th>
                          <th>Current Role</th>
                          <th>Change Role</th>
@@ -31,9 +31,10 @@
                             <form method="POST">
                                 <input type="hidden" name="user_id" value="{{ user.user_id }}">
                                 <select name="perm_level">
-                                    <option value="user" {% if user.perm_level == 'user' %}selected{% endif %}>User</option>
-                                    <option value="admin" {% if user.perm_level == 'admin' %}selected{% endif %}>Admin</option>
-                                    <option value="moderator" {% if user.perm_level == 'moderator' %}selected{% endif %}>Moderator</option>
+                                    <option value=1 {% if user.perm_level == 1 %}selected{% endif %}>User</option>
+                                    <option value=2 {% if user.perm_level == 2 %}selected{% endif %}>Moderator</option>
+                                    <option value=3 {% if user.perm_level == 3 %}selected{% endif %}>Emergency Service</option>
+                                    <option value=4 {% if user.perm_level == 4 %}selected{% endif %}>Admin</option>
                                 </select>
                                 <button type="submit">Update</button>
                             </form>
