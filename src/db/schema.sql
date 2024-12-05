@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS Users (
     phone_num VARCHAR(15),                          -- Phone number (optional, allows for country codes)
     user_address TEXT,                              -- User's address (text for flexibility in length, can use VARCHAR(255) if needed)
     perm_level int DEFAULT 1 CHECK (perm_level IN (0,1,2,3,4)),        -- Permission level (right now it can be user or admin)
+    -- 0: Guest; 1: User; 2: Moderator; 3: Emergency Service; 4: Admin
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp of user creation --> may be used for statistics (if not, it can be easily deleted)
 );
 

@@ -10,16 +10,23 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <!-- Dropdown Menu -->
-        <div class="dropdown">
-            <button class="dropbtn">Menu</button>
-            <div class="dropdown-content">
-                <a href="#">Option 1</a>
-                <a href="#">Option 2</a>
-                <a href="#">Option 3</a>
+        <!-- Left Section: Logout Button -->
+        <div class="navbar-left">
+            <div class="dropdown">
+                <button class="dropbtn">Menu</button>
+                <div class="dropdown-content">
+
+                {% if perm_level > 1 %}
+                    <a href="/manage_reports">Reports</a>
+                {% endif %}
+
+                {% if perm_level > 3 %}
+                    <a href="/manage_roles">Users</a>
+                {% endif %}
+
+                    <a href="#">Option 3</a>
+                </div>
             </div>
-            {% if perm_level == 'moderator' %}
-                <button onclick="location.href='/moderator_view';">Moderator View</button>
         </div>
 
         <!-- Logo -->
@@ -29,17 +36,12 @@
 
         <!-- Right Section: Buttons based on permission level -->
         <div class="navbar-right">
-            {% elif perm_level == 'admin' %}
-                <a href="/logout" class="login-link">Logout</a>
-            {% elif perm_level == 'admin' %}
-                <button onclick="location.href='/manage_roles';">Manage roles</button>
-                <a href="/logout" class="login-link">Logout</a>
-            {% elif perm_level == 'user' %}
-                <button onclick="location.href='/report';">Report Flood</button>
-                <a href="/logout" class="login-link">Logout</a>
+            <a href="/report" class="report-button">Report Flood</a>
+
+            {% if perm_level > 0 %}
+                <a href="/logout" class="account-link">Logout</a>
             {% else %}
-                <a href="/login" class="login-link">Login</a>
-                <a href="/register" class="login-link">Register</a>
+                <a href="/login" class="account-link">Login</a>
             {% endif %}
         </div>
     </nav>

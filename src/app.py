@@ -70,9 +70,8 @@ def report_form():
 
 #Moderator view
 
-@app.route('/moderator_view')
-#This will need to be changed to moderator but right now it's admin for the demo
-@require_role('moderator')
+@app.route('/manage_reports')
+@require_role(2)
 def moderator_view():
     """
     Displays the moderator view with reports fetched from the database.
@@ -89,7 +88,7 @@ def moderator_view():
         conn.close()
         
         # Pass reports to the template
-        return render_template('moderator_view.html', reports=reports)
+        return render_template('manage_reports.html', reports=reports)
     except Exception as e:
         print(f"Error fetching reports: {e}")
         flash('An error occurred while fetching reports.', 'error')
