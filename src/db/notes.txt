@@ -13,4 +13,4 @@ If you DROPPED a table CREATE it back up with:
  \i /docker-entrypoint-initdb.d/schema.sql
 
 
- UPDATE "Users" SET perm_level = 'admin' WHERE user_id = 2; # example of how to change user type
+ UPDATE Users SET perm_level = 4 WHERE user_id = 2; # example of how to change user type

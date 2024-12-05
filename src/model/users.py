@@ -35,7 +35,7 @@ def require_role(role):
 
 
 @users_bp.route('/manage_roles', methods=['GET', 'POST'])
-@require_role('admin')
+@require_role(4) #@require_role('admin')
 def manage_roles():
     if request.method == 'POST':
         print("Received POST request")
