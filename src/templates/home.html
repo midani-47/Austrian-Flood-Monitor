@@ -63,7 +63,7 @@
 
         <div>
             <!-- only if you are admin: -->
-            {% if session['perm_level'] == 'admin' %}
+            {% if session['perm_level'] == 4 %}
             <button><a href="{{ url_for('Users.manage_roles') }}" class="btn btn-primary" style="font-size: 20px; padding: 10px 20px;">Manage Roles</a></button><br>
         {% endif %}
             <h2>Welcome{{ session['username'] }}!</h2>

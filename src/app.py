@@ -38,12 +38,12 @@ def app_logout():
     return logout_user()
 
 # @app.route('/manage_roles', methods=['GET', 'POST'])
-@require_role('admin')
+@require_role(4) #@require_role('admin')
 def manage_roles():
     return update_user_role()
 
 @app.route('/get_all_users')
-@require_role('admin')
+@require_role(4) #@require_role('admin')
 def get_users():
     return get_all_users()
 
