@@ -48,6 +48,13 @@ CREATE TABLE FloodReport (
     Verified BOOLEAN NOT NULL DEFAULT FALSE -- Indicates whether the report has been verified
 );
 
+CREATE TABLE EmergencyResponse (
+    ID SERIAL PRIMARY KEY,
+    Status VARCHAR(50) NOT NULL DEFAULT 'Planning', -- Default status is "Planning"
+    ReportID INT NOT NULL REFERENCES FloodReport(ID) ON DELETE CASCADE -- Foreign key to link reports
+);
+
+
 
 -- Table for Locations
 -- CREATE TABLE IF NOT EXISTS Locations (

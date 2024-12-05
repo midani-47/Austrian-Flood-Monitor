@@ -112,9 +112,13 @@ def register_user():
     return render_template('register.html')
 
 def home_page():
+    """
+    Render the homepage and set appropriate context based on login status.
+    """
+    perm_level = session.get('perm_level', 0)  # Default to 0 (not logged in)
+    user_email = session.get('email', None)  # Get user's email if logged in
+    return render_template('index.html', perm_level=int(perm_level), user_email=user_email)
 
-    perm_level = int(session.get('perm_level', 0))
-    return render_template('index.html', perm_level=perm_level)
 
 
 @users_bp.route('/login', methods=['GET', 'POST'])
@@ -127,44 +131,40 @@ def login_user():
         email = request.form['email']
         password = request.form['password']
 
-        # Debug: Print email and password for debugging (remove later)
-        print(f"Attempting login with email: {email} and password: {password}")
-        
         # Connect to the database
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)  # Use DictCursor here
-        
+
         # Query the Users table by email
         cur.execute('SELECT * FROM Users WHERE email = %s', (email,))
         user = cur.fetchone()
-        
-        # Debug: Log user data from database (remove later)
-        print(f"Retrieved user from DB: {user}")
-        
         cur.close()
         conn.close()
 
-        # If user exists and password matches, set session variables and redirect
+        # Authenticate user
         if user and check_password_hash(user['hashed_passw'], password):
+            # Set session variables without converting perm_level
             session['user_id'] = user['user_id']
             session['email'] = user['email']
-            session['perm_level'] = int(user['perm_level'])
-            
+            session['perm_level'] = user['perm_level']
+
             flash('Login successful!', 'success')
             return redirect(url_for('app_home'))  # Redirect to the home page
 
         # If authentication fails
         else:
             flash('Invalid email or password.', 'error')
-    
+
     return render_template('login.html')
 
+@users_bp.route('/logout')
 def logout_user():
-    session.pop('perm_level', None)
-    session.pop('user_id', None)
+    """
+    Clear the session and redirect to the login page.
+    """
+    session.clear()  # Clear the session data
     flash('You have been logged out.', 'success')
-    return redirect(url_for('app_login'))
-
+    return redirect(url_for('app_home'))  # Redirect to home page
 
 def update_user_role(user_id, perm_level):
     conn = get_db_connection()

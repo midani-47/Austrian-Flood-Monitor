@@ -12,5 +12,7 @@ TRUNCATE TABLE FloodReport;
 If you DROPPED a table CREATE it back up with:
  \i /docker-entrypoint-initdb.d/schema.sql
 
+To restart the flask container:
+docker restart afm_flask_app
 
  UPDATE Users SET perm_level = 4 WHERE user_id = 2; # example of how to change user type

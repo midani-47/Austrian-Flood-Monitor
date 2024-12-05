@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Dispatch Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='AFM_logo.png') }}" alt="AFM Logo">
+        </div>
+        <div class="navbar-right">
+            <a class="login-link" href="/login">Login</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="form-container">
+        <h1>Manage Emergency Dispatches</h1>
+
+        <!-- Create Dispatch Form -->
+        <form id="create-dispatch-form">
+            <label for="report-id">Report ID:</label>
+            <input type="number" id="report-id" name="report-id" placeholder="Enter Report ID" required>
+            <button type="submit" class="report-button">Create Dispatch</button>
+        </form>
+
+        <!-- Update Dispatch Status -->
+        <form id="update-dispatch-form" style="margin-top: 20px;">
+            <label for="dispatch-id">Dispatch ID:</label>
+            <input type="number" id="dispatch-id" name="dispatch-id" placeholder="Enter Dispatch ID" required>
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="Planning">Planning</option>
+                <option value="on the way">On the Way</option>
+                <option value="operation in progress">Operation in Progress</option>
+                <option value="operation completed">Operation Completed</option>
+            </select>
+            <button type="submit" class="report-button">Update Status</button>
+        </form>
+
+        <!-- Dispatch Table -->
+        <div id="dispatch-table-container" style="margin-top: 40px;">
+            <h2>Active Dispatches</h2>
+            <table id="dispatch-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Status</th>
+                        <th>Report ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/dispatch.js') }}"></script>
+</body>
+</html>

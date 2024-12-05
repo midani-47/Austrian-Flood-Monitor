@@ -1,4 +1,7 @@
 This is a file of things to check, and things to do. Please note and address. 
 
+current URL of the home:
+http://127.0.0.1:5001/
+
 1. There is a report.html file in the templates. What's the story? 
 2. Separate JS and HTMl and CSS functionalities, with their locations.

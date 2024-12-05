@@ -3,6 +3,9 @@ node_modules/
 
 package-lock.json
 
+# Just so someone does not push the key on github
+src/static/scripts/index.js
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -8,22 +8,19 @@
     <link rel="stylesheet" href="../static/stylesheet.css">
 </head>
 <body>
-    <!-- Navbar -->
+        <!-- Navbar -->
     <nav class="navbar">
-        <!-- Left Section: Logout Button -->
+        <!-- Left Section: Menu -->
         <div class="navbar-left">
             <div class="dropdown">
                 <button class="dropbtn">Menu</button>
                 <div class="dropdown-content">
-
-                {% if perm_level > 1 %}
-                    <a href="/manage_reports">Reports</a>
-                {% endif %}
-
-                {% if perm_level > 3 %}
-                    <a href="/manage_roles">Users</a>
-                {% endif %}
-
+                    {% if perm_level > 1 %}
+                        <a href="/manage_reports">Reports</a>
+                    {% endif %}
+                    {% if perm_level > 2 %}
+                        <a href="/emergencyresponse">Emergency Services</a>
+                    {% endif %}
                     <a href="#">Option 3</a>
                 </div>
             </div>
@@ -34,11 +31,10 @@
             <img src="../static/AFM_logo.png" alt="AFM Logo">
         </div>
 
-        <!-- Right Section: Buttons based on permission level -->
+        <!-- Right Section: Login/Logout -->
         <div class="navbar-right">
-            <a href="/report" class="report-button">Report Flood</a>
-
             {% if perm_level > 0 %}
+                <span class="user-info">Logged in as: {{ user_email }}</span>
                 <a href="/logout" class="account-link">Logout</a>
             {% else %}
                 <a href="/login" class="account-link">Login</a>
