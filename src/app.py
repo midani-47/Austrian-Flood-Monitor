@@ -66,3 +66,31 @@ def report_form():
         flask.Response: The rendered HTML form for submitting flood reports.
     """
     return render_template('report_form.html')
+
+
+#Moderator view
+
+@app.route('/moderator_view')
+#This will need to be changed to moderator but right now it's admin for the demo
+@require_role('moderator')
+def moderator_view():
+    """
+    Displays the moderator view with reports fetched from the database.
+    """
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        
+        # Fetch flood reports from the database
+        cur.execute('SELECT * FROM FloodReport WHERE Verified = FALSE')  # Example: Fetch unverified reports
+        reports = cur.fetchall()
+        
+        cur.close()
+        conn.close()
+        
+        # Pass reports to the template
+        return render_template('moderator_view.html', reports=reports)
+    except Exception as e:
+        print(f"Error fetching reports: {e}")
+        flash('An error occurred while fetching reports.', 'error')
+        return redirect(url_for('app_home'))

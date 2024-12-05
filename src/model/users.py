@@ -109,11 +109,8 @@ def register_user():
     return render_template('register.html')
 
 def home_page():
-    if 'user_id' not in session:
-        flash('Please log in to access the home page.', 'error')
-        return redirect(url_for('app_login'))
-
-    return render_template('home.html', perm_level=session.get('perm_level', 'user'))
+    perm_level = session.get('perm_level', 'guest')
+    return render_template('index.html', perm_level=perm_level)
 
 
 @users_bp.route('/login', methods=['GET', 'POST'])
