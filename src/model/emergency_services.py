@@ -29,6 +29,7 @@ def create_emergency_dispatch():
 
     Extracts the Report ID from the JSON body of an HTTP POST request
     and inserts a new emergency dispatch into the `EmergencyResponse` table.
+    If there are gaps in the ID sequence, fills the lowest available ID first.
 
     Returns:
         flask.Response: A JSON response indicating success or failure of the operation.
@@ -44,14 +45,31 @@ def create_emergency_dispatch():
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # Insert into EmergencyResponse table
+        # Find the lowest unused ID in the EmergencyResponse table
         cur.execute(
             '''
-            INSERT INTO EmergencyResponse (ReportID)
-            VALUES (%s)
+            SELECT MIN(id + 1)
+            FROM EmergencyResponse t1
+            WHERE NOT EXISTS (
+                SELECT 1 FROM EmergencyResponse t2 WHERE t2.id = t1.id + 1
+            );
+            '''
+        )
+        lowest_unused_id = cur.fetchone()[0]
+
+        # If there are no gaps, use the next value in the sequence
+        if lowest_unused_id is None:
+            cur.execute("SELECT nextval('emergencyresponse_id_seq')")
+            lowest_unused_id = cur.fetchone()[0]
+
+        # Insert the new dispatch with the determined ID
+        cur.execute(
+            '''
+            INSERT INTO EmergencyResponse (ID, ReportID, Status)
+            VALUES (%s, %s, 'Planning')
             RETURNING ID, Status;
             ''',
-            (report_id,)
+            (lowest_unused_id, report_id)
         )
 
         dispatch_id, status = cur.fetchone()
@@ -63,6 +81,44 @@ def create_emergency_dispatch():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+def get_all_dispatches():
+    """
+    Retrieves all active emergency dispatches from the database.
+
+    Returns:
+        flask.Response: A JSON response containing the list of dispatches or an error message.
+    """
+    try:
+        # Connect to the database
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Query to fetch all active dispatches
+        cur.execute(
+            '''
+            SELECT ID, Status, ReportID
+            FROM EmergencyResponse;
+            '''
+        )
+
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+
+        # Format the response as a list of dictionaries
+        dispatches = [{"id": row[0], "status": row[1], "report_id": row[2]} for row in rows]
+        return jsonify(dispatches), 200
+
+    except Exception as e:
+        # Handle and return any errors
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+
 # Function to get all dispatches for a report
 def get_dispatches_by_report(report_id):
     """
@@ -145,6 +201,43 @@ def update_dispatch_status(dispatch_id):
             return jsonify({"error": "Dispatch not found"}), 404
 
         return jsonify({"message": "Dispatch status updated", "dispatch_id": row[0], "new_status": row[1]}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+def delete_dispatch(dispatch_id):
+    """
+    Deletes an emergency dispatch by its ID.
+
+    Args:
+        dispatch_id (int): The ID of the dispatch to delete.
+
+    Returns:
+        flask.Response: A JSON response indicating success or failure of the operation.
+    """
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Delete the dispatch with the given ID
+        cur.execute(
+            '''
+            DELETE FROM EmergencyResponse
+            WHERE ID = %s
+            RETURNING ID;
+            ''',
+            (dispatch_id,)
+        )
+
+        row = cur.fetchone()
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        if not row:
+            return jsonify({"error": "Dispatch not found"}), 404
+
+        return jsonify({"message": "Dispatch removed", "dispatch_id": row[0]}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

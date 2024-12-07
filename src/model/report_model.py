@@ -73,3 +73,34 @@ def create_flood_report():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+def get_all_reports():
+    """
+    Retrieves all flood reports from the database.
+
+    Returns:
+        flask.Response: A JSON response containing the list of reports or an error message.
+    """
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Query to fetch all reports
+        cur.execute(
+            '''
+            SELECT ID, Location, Severity, AssociatedEmail
+            FROM FloodReport; 
+            '''
+        ) # todo: since we dont have a way to verify the reports for now we show all of them. but we should only have
+          #   the verified one which is done by adding "WHERE Verified = t" at -> FROM FloodReport;
+
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+
+        # Format the response as a list of dictionaries
+        reports = [{"id": row[0], "location": row[1], "severity": row[2], "email": row[3]} for row in rows]
+        return jsonify(reports), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

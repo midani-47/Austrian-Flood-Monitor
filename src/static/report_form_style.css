@@ -6,10 +6,16 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main container for scrollable content */
+main {
+    flex-grow: 1;
+    overflow-y: auto; /* Allow scrolling when content overflows */
+    padding-top: 60px; /* Add space for the fixed navbar */
 }
 
 /* Form Container Styling */
@@ -20,7 +26,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     width: 100%;
-    margin: 0 auto; /* Ensure balanced margins on both sides */
+    margin: 20px auto;
 }
 
 /* Form Header */
@@ -42,7 +48,7 @@ form input,
 form textarea,
 form select,
 form button {
-    width: 100%; /* Ensure full width with consistent padding */
+    width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -56,7 +62,7 @@ form button {
 form input:focus,
 form textarea:focus,
 form select:focus {
-    border-color: #007bff;
+    border-color: rgb(201, 6, 43);
     outline: none;
 }
 
@@ -68,7 +74,7 @@ form textarea {
 
 /* Button Styling */
 form button {
-    background-color: #007bff;
+    background-color: rgb(201, 6, 43);
     color: white;
     border: none;
     cursor: pointer;
@@ -76,40 +82,166 @@ form button {
 }
 
 form button:hover {
-    background-color: #0056b3;
+    background-color: rgb(182, 13, 44);
     transform: translateY(-2px);
 }
 
 /* File Upload Section */
 #file-upload-container {
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Vertically align items */
-    gap: 10px; /* Space between file input and trash icon */
-    margin-right: 0; /* Remove extra right margin */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 0;
 }
 
 #picture {
-    flex-grow: 1; /* Allow file input to fill available space */
-    min-width: 0; /* Prevent overflow */
+    flex-grow: 1;
+    min-width: 0;
 }
 
 /* Trash Icon Styling */
 #remove-file-icon {
-    color: #c70f0f; /* Icon color */
+    color: #c70f0f;
     cursor: pointer;
-    font-size: 1.5rem; /* Adjust icon size */
-    line-height: 1; /* Prevent additional vertical spacing */
-    align-self: center; /* Ensure vertical alignment with file input */
-    /*margin-left: auto; !* Push icon to the right edge *!*/
+    font-size: 1.5rem;
+    line-height: 1;
+    align-self: center;
     margin: 1px 1px 15px 1px;
 }
 
 #remove-file-icon:hover {
     color: #ff0000;
-    transform: scale(1.2); /* Slightly enlarge icon on hover */
+    transform: scale(1.2);
 }
 
 /* Hover Effect for Form Container */
 .form-container:hover {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Navbar styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)); /* Fading effect */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Centered logo */
+.logo {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo img {
+    height: 120px;
+    padding-top: 12px;
+    width: auto;
+    vertical-align: middle;
+}
+
+/* Navbar settings */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Home Button Styling */
+.home-button {
+    background-color: rgb(201, 6, 43);
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: rgb(182, 13, 44);
+    color: white;
+}
+
+/* Table Styles */
+#dispatch-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#dispatch-table th, #dispatch-table td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+#dispatch-table th {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+}
+
+#dispatch-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#dispatch-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* General Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+th {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Reports and Dispatch Table Containers */
+#reports-table-container,
+#dispatch-table-container {
+    margin-top: 40px;
+    overflow-x: auto; /* Handle long tables with a scrollbar */
 }

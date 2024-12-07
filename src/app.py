@@ -6,14 +6,15 @@ import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
-from flask import Flask, render_template
 import psycopg2
-from .model.report_model import create_flood_report
+from .model.report_model import create_flood_report, get_all_reports
 
 from .model.emergency_services import (
     create_emergency_dispatch,
     get_dispatches_by_report,
-    update_dispatch_status
+    update_dispatch_status,
+    get_all_dispatches,
+    delete_dispatch
 )
 
 app = Flask(__name__)
@@ -24,18 +25,18 @@ app.register_blueprint(users_bp)  # Register the Blueprint
 def require_login_and_permission(required_perm_level):
     """
     Decorator to check if a user is logged in and meets the required permission level.
+
+    This function ensures that some URLs can be protected
     """
     def decorator(f):
         @wraps(f)
-        def wrapped(*args, **kwargs):
-            if 'user_id' not in session:
-                flash('Please log in to access this page.', 'error')
-                return redirect(url_for('app_login'))
-            if session.get('perm_level', 'user') not in required_perm_level:
+        def decorated_function(*args, **kwargs):
+            perm_level = session.get('perm_level', 0)  # Default to 0 (logged out)
+            if perm_level < required_perm_level:
                 flash('You do not have permission to access this page.', 'error')
-                return redirect(url_for('app_home'))
+                return redirect(url_for('login_user'))  # Redirect to login page
             return f(*args, **kwargs)
-        return wrapped
+        return decorated_function
     return decorator
 
 
@@ -111,7 +112,27 @@ def get_dispatch(report_id):
 def update_dispatch(dispatch_id):
     return update_dispatch_status(dispatch_id)
 
+@app.route('/api/dispatches', methods=['GET'])
+@require_login_and_permission(3)  # Protect route for users with permission level 3 or above
+def fetch_dispatches():
+    """
+    API route to retrieve all active emergency dispatches.
+
+    Returns:
+        flask.Response: The JSON response from the `get_all_dispatches` function.
+    """
+    return get_all_dispatches()
+
+@app.route("/api/dispatch/<int:dispatch_id>", methods=["DELETE"])
+def remove_dispatch(dispatch_id):
+    return delete_dispatch(dispatch_id)
+
+
 @app.route('/emergencyresponse')
-@require_login_and_permission(['admin', 'moderator'])
+@require_login_and_permission(3)
 def emergency_response():
     return render_template("EmergencyResponse.html")
+
+@app.route("/api/reports", methods=["GET"])
+def api_get_all_reports():
+    return get_all_reports()

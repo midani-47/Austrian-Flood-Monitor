@@ -4,7 +4,7 @@ const map = L.map('map', {
 }).setView([47.7162, 14.5501], 7); // Center of Austria (default zoom)
 
 // Add MapTiler Basic Map tiles
-L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=IHATETHIS', {
+L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=fuckThisShit', {
   attribution: '&copy; <a href="https://www.maptiler.com/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
 }).addTo(map);

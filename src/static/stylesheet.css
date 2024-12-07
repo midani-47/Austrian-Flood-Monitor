@@ -41,8 +41,15 @@ html, body {
     vertical-align: middle;
 }
 
+/*navbar settings*/
 
 .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar-left {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -159,30 +166,23 @@ h1, h2 {
 }
 
 
-/* Table Styles */
-#dispatch-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
 
-#dispatch-table th, #dispatch-table td {
-    border: 1px solid #ddd;
-    text-align: center;
-    padding: 10px;
-    font-family: 'Poppins', sans-serif;
-}
 
-#dispatch-table th {
-    background-color: #333;
+/*the button that takes us back to the home page*/
+.home-button {
+    background-color:  rgb(201, 6, 43);
     color: white;
-    font-weight: bold;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#dispatch-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
 
-#dispatch-table tr:hover {
-    background-color: #f1f1f1;
+.home-button:hover {
+    background-color: rgb(182, 13, 44);
+    color: white;
 }
