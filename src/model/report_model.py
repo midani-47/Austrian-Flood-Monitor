@@ -39,9 +39,15 @@ def create_flood_report():
     severity = data.get('severity')
     if not email or not severity:
         return jsonify({"error": "Email and severity are mandatory"}), 400
+    
+    locationOn = data.get('location')
 
-    # Generate random location placeholder
-    location = f"{random.uniform(-90, 90):.6f},{random.uniform(-180, 180):.6f}" # todo: could also just do "random location"
+    if(locationOn):
+        # Get Data from JSON latitude then longitutde
+        location = f"{data.get('lat')},{data.get('long')}"
+    else:
+        # Generate random location placeholder
+        location = f"{random.uniform(-90, 90):.6f},{random.uniform(-180, 180):.6f}" # todo: could also just do "random location"
 
     # Optional fields
     phone_number = data.get('phone_number')

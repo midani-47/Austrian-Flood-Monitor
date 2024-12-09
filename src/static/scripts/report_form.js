@@ -9,6 +9,55 @@ console.log("JavaScript loaded successfully!");
         console.log("File selection cleared.");
     });
 
+var lat;
+var long;
+var currloc = false;
+
+function wait(ms){
+    var start = new Date().getTime();
+    var end = start;
+    while(end < start + ms) {
+      end = new Date().getTime();
+   }
+ }
+
+function getLocation() {
+    console.log("Location tracking button clicked!");
+    currloc = true;
+
+    const getLoc = async () => {
+    var acc;
+    var rep = 0;
+
+    const latLabel = document.getElementById('lat');
+    const longLabel = document.getElementById('long');
+
+    do {
+        if(currloc) {
+            navigator.geolocation.getCurrentPosition(function(location) {
+               lat = Number(location.coords.latitude.toFixed(6));
+               long = Number(location.coords.longitude.toFixed(6));
+               acc = location.coords.accuracy;
+
+               latLabel.innerHTML = lat;
+               longLabel.innerHTML = long;
+            });
+       }
+       rep++;
+       console.log("failed to get good accuracy, attempting again in 0.2 seconds, attempt nr " + rep);
+
+       wait(200);
+    }
+    while(acc > 50 + ((rep - 1) * 50) && rep < 20);
+    
+    if(rep >= 20) {
+        console.log("failed go get good accuracy in 20+ attempts, aborting");
+        currloc = false;
+    }
+    };
+    
+    getLoc();
+}
 
 // Add a submit event listener to the form
 document.getElementById('flood-report-form').addEventListener('submit', async function (event) {
@@ -70,6 +119,19 @@ document.getElementById('flood-report-form').addEventListener('submit', async fu
     formData.append('picture', document.getElementById('picture').files[0]); // Picture file (optional)
     formData.append('severity', document.getElementById('severity').value); // Severity (required)
 
+    if(currloc) {
+        formData.append('location', true);
+        formData.append('lat', lat);
+        formData.append('long', long);
+        console.log("appended location data");
+    }
+    else {
+        formData.append('location', false);
+        formData.append('lat', 0);
+        formData.append('long', 0);
+        console.log("appended no location data");
+    }
+
     try {
         // Send a POST request to the backend API
         const response = await fetch('/api/reports', {
@@ -78,7 +140,10 @@ document.getElementById('flood-report-form').addEventListener('submit', async fu
                 email: formData.get('email'), // Get email value
                 phone_number: formData.get('phone_number'), // Get phone number value
                 description: formData.get('description'), // Get description value
-                severity: formData.get('severity') // Get severity value
+                severity: formData.get('severity'), // Get severity value
+                location: formData.get('location'),
+                lat: formData.get('lat'),
+                long: formData.get('long')
             }),
             headers: {
                 'Content-Type': 'application/json' // Indicate JSON data format
