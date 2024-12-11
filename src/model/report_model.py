@@ -47,7 +47,16 @@ def create_flood_report():
         location = f"{data.get('lat')},{data.get('long')}"
     else:
         # Generate random location placeholder
-        location = f"{random.uniform(-90, 90):.6f},{random.uniform(-180, 180):.6f}" # todo: could also just do "random location"
+        location = f"{random.uniform(47.065415, 48.471273):.6f},{random.uniform(13.073759, 16.372826):.6f}" # todo: could also just do "random location"
+        #city locations:
+        # Vienna: ~48.213568 16.372826
+        # St Pölten: ~48.202119 15.634828
+        # Graz: ~47.065415 15.42632
+        # Salzburg: ~47.805343 13.073759
+        #
+        # min lat: 47.065415, max lat: 48.471273
+        # min long: 13.073759, max long: 16.372826
+        #
 
     # Optional fields
     phone_number = data.get('phone_number')
