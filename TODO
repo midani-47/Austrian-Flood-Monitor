@@ -7,3 +7,4 @@ http://127.0.0.1:5001/
 2. Separate JS and HTMl and CSS functionalities, with their locations.
 3. on SCRUM-58_ticket, SCRUM-88_subtask this would be nice to be implemented as a pop up on the location marker,
 since as of now it is not really feasible  to be implemented in our current website.
+4. on report_model.py do crtl+f and type in: todo: since we dont

@@ -82,7 +82,7 @@ def create_flood_report():
 
 def get_all_reports():
     """
-    Retrieves all flood reports from the database.
+    Retrieves all flood reports from the database, including verification status.
 
     Returns:
         flask.Response: A JSON response containing the list of reports or an error message.
@@ -91,21 +91,29 @@ def get_all_reports():
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # Query to fetch all reports
+        # Query to fetch all reports including the 'verified' field
         cur.execute(
             '''
-            SELECT ID, Location, Severity, AssociatedEmail
-            FROM FloodReport; 
+            SELECT ID, Location, Severity, AssociatedEmail, Verified
+            FROM FloodReport;
             '''
-        ) # todo: since we dont have a way to verify the reports for now we show all of them. but we should only have
-          #   the verified one which is done by adding "WHERE Verified = t" at -> FROM FloodReport;
+        )
 
         rows = cur.fetchall()
         cur.close()
         conn.close()
 
         # Format the response as a list of dictionaries
-        reports = [{"id": row[0], "location": row[1], "severity": row[2], "email": row[3]} for row in rows]
+        reports = [
+            {
+                "id": row[0],
+                "location": row[1],
+                "severity": row[2],
+                "email": row[3],
+                "verified": row[4],  # Add the verified field to the response
+            }
+            for row in rows
+        ]
         return jsonify(reports), 200
 
     except Exception as e:
