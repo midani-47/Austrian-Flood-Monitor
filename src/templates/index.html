@@ -21,7 +21,9 @@
                     {% if perm_level > 2 %}
                         <a href="/emergencyresponse">Emergency Services</a>
                     {% endif %}
-                    <a href="#">Option 3</a>
+                    {% if perm_level == 4 %}
+                    <a href="{{ url_for('Users.manage_roles') }}">Manage Users</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
