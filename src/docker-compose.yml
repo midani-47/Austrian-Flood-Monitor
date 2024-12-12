@@ -5,13 +5,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: debug
     container_name: afm_flask_app
     environment:
       FLASK_APP: app.py
       FLASK_ENV: development
+      FLASK_DEBUG: True
       DATABASE_URL: postgresql://afm_user:afm_password@db:5432/AFM
     ports:
-      - "5001:5000" # TODO: Check this with with marcus and the apple gang (mac)
+      - "5001:5000" # TODO: Check this with with markus and the apple gang (mac)
+      - "5678:5678"
     volumes:
       - .:/app
       - ./src:/AFM/src

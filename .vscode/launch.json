@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Attach",
+            "type": "debugpy",
+            "request": "attach",
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/",
+                    "remoteRoot": "/usr/src/app"
+                }
+            ]
+        }
+    ]
+}

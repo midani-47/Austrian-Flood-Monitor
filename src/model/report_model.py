@@ -42,7 +42,7 @@ def create_flood_report():
     
     locationOn = data.get('location')
 
-    if(locationOn):
+    if(locationOn == "true"):
         # Get Data from JSON latitude then longitutde
         location = f"{data.get('lat')},{data.get('long')}"
     else:
