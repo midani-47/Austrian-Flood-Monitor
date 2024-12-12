@@ -4,26 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Roles</title>
-    <link rel="stylesheet" href="../static/manage_roles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <!-- New, cleaner Home Button -->
-    <a href="{{ url_for('app_home') }}" class="home-button">Home</a>
     <div class="container">
         <div class="header">
-            <h1>Manage User Roles</h1>
+            <h1>Manage Users Roles</h1>
         </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Email</th>
-                        <th>Current Role</th>
-                        <th>Change Role</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <table>
+              <thead>
+                     <tr>
+                         <th>User ID</th>
+                         <!-- <th>Name</th> No name?-->
+                         <th>Email</th>
+                         <th>Current Role</th>
+                         <th>Change Role</th>
+                     </tr>
+                 </thead>
+                 <tbody>
                     {% for user in users %}
                     <tr>
                         <td>{{ user.user_id }}</td>
@@ -45,14 +43,18 @@
                     {% endfor %}
                     {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="{{ 'success-message' if category == 'success' else 'error-message' }}">{{ message }}</div>
-                        {% endfor %}
+                      {% for category, message in messages %}
+                        <div class="{{ 'success-message' if category == 'success' else 'error-message' }}">{{ message }}</div>
+                      {% endfor %}
                     {% endif %}
-                    {% endwith %}
-                </tbody>
-            </table>
+                  {% endwith %}
+                 </tbody>
+        </table>
+        <!-- <p><a href="{{ url_for('Users.manage_roles') }}">Manage Roles</a></p>
+        <br> -->
+        <p><a href="{{ url_for('app_home') }}" class="btn btn-primary">Home</a></p>
+
         </div>
-    </div>
+
 </body>
 </html>

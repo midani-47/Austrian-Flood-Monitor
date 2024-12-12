@@ -4,7 +4,7 @@ const map = L.map('map', {
 }).setView([47.7162, 14.5501], 7); // Center of Austria (default zoom)
 
 // Add MapTiler Basic Map tiles
-L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=ihatethiskey', {
+L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=fuckthisShit', {
   attribution: '&copy; <a href="https://www.maptiler.com/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
 }).addTo(map);
@@ -60,3 +60,39 @@ fetch('/static/scripts/geoBoundaries-AUT-ADM0_simplified.geojson')
 
 // Add a marker for the center of Austria
 L.marker([47.5162, 14.5501]).addTo(map).bindPopup('Center of Austria').openPopup();
+
+// Fetch reports from the backend and display them on the map
+async function fetchAndDisplayReports() {
+    try {
+        const response = await fetch('/api/reports');
+        if (!response.ok) throw new Error('Failed to fetch reports');
+
+        const reports = await response.json();
+        // console.log(reports);
+
+        reports.forEach(report => {
+            // Convert boolean verified to colored Yes/No text
+            const verifiedText = report.verified
+                ? `<span style="color: green;">Yes</span>`
+                : `<span style="color: red;">No</span>`;
+
+            // Create a marker for each report with a popup
+            const [latitude, longitude] = report.location.split(',').map(Number);
+            const marker = L.marker([latitude, longitude])
+                .addTo(map)
+                .bindPopup(`
+                    <strong>Report ID:</strong> ${report.id}<br>
+                    <strong>Severity:</strong> ${report.severity}<br>
+                    <strong>Verified:</strong> ${verifiedText}<br>
+                    <strong>Location:</strong> ${report.location}
+                `);
+        });
+    } catch (error) {
+        console.error('Error fetching and displaying reports:', error);
+    }
+}
+
+// Call the function to fetch and display reports
+fetchAndDisplayReports();
+
+
