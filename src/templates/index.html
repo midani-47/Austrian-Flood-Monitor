@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../static/stylesheet.css">
 </head>
 <body>
-    <!-- Navbar -->
+        <!-- Navbar -->
     <nav class="navbar">
         <!-- Left Section: Menu -->
         <div class="navbar-left">
@@ -21,9 +21,7 @@
                     {% if perm_level > 2 %}
                         <a href="/emergencyresponse">Emergency Services</a>
                     {% endif %}
-                    {% if perm_level == 4 %}
-                        <a href="{{ url_for('Users.manage_roles') }}">Manage Users</a>
-                    {% endif %}
+                    <a href="#">Option 3</a>
                 </div>
             </div>
         </div>
