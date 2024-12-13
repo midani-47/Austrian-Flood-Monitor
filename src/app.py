@@ -7,7 +7,13 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 import psycopg2
-from .model.report_model import create_flood_report, get_all_reports
+from .model.report_model import (
+    create_flood_report,
+    get_all_reports,
+    get_unverified_reports,
+    delete_report,
+    verify_report
+    )
 
 from .model.emergency_services import (
     create_emergency_dispatch,
@@ -136,3 +142,39 @@ def emergency_response():
 @app.route("/api/reports", methods=["GET"])
 def api_get_all_reports():
     return get_all_reports()
+
+
+@app.route('/manage_reports')
+@require_login_and_permission(2)
+def manage_reports():
+    """
+    Renders the manage reports page.
+
+    Returns:
+        flask.Response: The rendered HTML template for managing reports.
+    """
+    return render_template("manage_reports.html")
+
+@app.route('/api/unverified_reports', methods=['GET'])
+@require_login_and_permission(2)
+def fetch_unvertified_reports():
+    """
+    API route to retrieve all unverified reports.
+    """
+    return get_unverified_reports()
+
+@app.route('/api/unverified_reports/<int:report_id>/verify', methods=['PUT'])
+@require_login_and_permission(2) 
+def verify_report_api(report_id):
+    """
+    API route to verify a report.
+    """
+    return verify_report(report_id)
+
+@app.route('/api/unverified_reports/<int:report_id>', methods=['DELETE'])
+@require_login_and_permission(2)
+def delete_report_api(report_id):
+    """
+    API route to delete a report.
+    """
+    return delete_report(report_id)

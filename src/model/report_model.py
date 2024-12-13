@@ -1,6 +1,6 @@
 import psycopg2
 import random
-from flask import jsonify, request
+from flask import request, jsonify
 
 # Database connection function
 def get_db_connection():
@@ -125,5 +125,78 @@ def get_all_reports():
         ]
         return jsonify(reports), 200
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+def get_unverified_reports():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            '''
+            SELECT ID, Location, AssociatedEmail, AssociatedPhoneNumber, Description, Severity, LinkToPicture
+            FROM FloodReport
+            WHERE Verified = FALSE;
+            '''
+        )
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+
+        reports = [{"id": row[0], "location": row[1], "email": row[2], "phone": row[3],
+                    "description": row[4], "severity": row[5], "picture": row[6]} for row in rows]
+        return jsonify(reports), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+def verify_report(report_id):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            '''
+            UPDATE FloodReport
+            SET Verified = TRUE
+            WHERE ID = %s
+            RETURNING ID;
+            ''',
+            (report_id,)
+        )
+        row = cur.fetchone()
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        if not row:
+            return jsonify({"error": "Report not found"}), 404
+
+        return jsonify({"message": "Report verified", "report_id": row[0]}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+def delete_report(report_id):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            '''
+            DELETE FROM FloodReport
+            WHERE ID = %s
+            RETURNING ID;
+            ''',
+            (report_id,)
+        )
+        row = cur.fetchone()
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        if not row:
+            return jsonify({"error": "Report not found"}), 404
+
+        return jsonify({"message": "Report deleted", "report_id": row[0]}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
