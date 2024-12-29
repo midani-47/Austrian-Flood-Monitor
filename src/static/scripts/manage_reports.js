@@ -1,5 +1,4 @@
-// Function to fetch and display reports
-async function fetchAndDisplayReports() {
+async function fetchAndDisplayUnverifiedReports() {
     const tableBody = document.getElementById('reports-table-body');
     tableBody.innerHTML = '';
 
@@ -23,7 +22,7 @@ async function fetchAndDisplayReports() {
                 </td>
                 <td>
                     <button onclick="verifyReport(${report.id})">Verify</button>
-                    <button onclick="deleteReport(${report.id})" class="delete-button">Delete</button>
+                    <button onclick="rejectReport(${report.id})">Reject</button>
                 </td>
             `;
 
@@ -41,26 +40,28 @@ async function verifyReport(reportId) {
         if (!response.ok) throw new Error('Failed to verify report');
 
         alert('Report verified successfully!');
-        fetchAndDisplayReports(); // Refresh the table
+        fetchAndDisplayUnverifiedReports(); // Refresh the table
     } catch (error) {
         console.error('Error verifying report:', error);
         alert('Failed to verify report.');
     }
 }
 
-// Function to delete a report
-async function deleteReport(reportId) {
+async function rejectReport(reportId) {
     try {
-        const response = await fetch(`/api/unverified_reports/${reportId}`, { method: 'DELETE' });
-        if (!response.ok) throw new Error('Failed to delete report');
+        const response = await fetch(`/api/unverified_reports/${reportId}/reject`, { method: 'PUT' });
+        if (!response.ok) throw new Error('Failed to reject report');
 
-        alert('Report deleted successfully!');
-        fetchAndDisplayReports(); // Refresh the table
+        alert('Report rejected successfully!');
+        fetchAndDisplayUnverifiedReports(); // Refresh the table
     } catch (error) {
-        console.error('Error deleting report:', error);
-        alert('Failed to delete report.');
+        console.error('Error rejecting report:', error);
+        alert('Failed to reject report.');
     }
 }
 
+
 // Fetch and display reports on page load
-fetchAndDisplayReports();
+fetchAndDisplayUnverifiedReports();
+
+

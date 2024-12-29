@@ -155,6 +155,11 @@ def manage_reports():
     """
     return render_template("manage_reports.html")
 
+@app.route('/all_reports')
+@require_login_and_permission(2)
+def display_reports():
+    return render_template("all_reports.html")
+
 @app.route('/api/unverified_reports', methods=['GET'])
 @require_login_and_permission(2)
 def fetch_unvertified_reports():
