@@ -76,7 +76,7 @@ def create_flood_report():
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING ID;
             ''',
-            (location, email, phone_number, user_id, description, picture, severity, False)
+            (location, email, phone_number, user_id, description, picture, severity, 0)
         )
 
         report_id = cur.fetchone()[0]
@@ -137,7 +137,7 @@ def get_unverified_reports():
             '''
             SELECT ID, Location, AssociatedEmail, AssociatedPhoneNumber, Description, Severity, LinkToPicture
             FROM FloodReport
-            WHERE Verified = FALSE;
+            WHERE Verified = 0;
             '''
         )
         rows = cur.fetchall()
@@ -158,7 +158,7 @@ def verify_report(report_id):
         cur.execute(
             '''
             UPDATE FloodReport
-            SET Verified = TRUE
+            SET Verified = 1
             WHERE ID = %s
             RETURNING ID;
             ''',
@@ -177,13 +177,14 @@ def verify_report(report_id):
         return jsonify({"error": str(e)}), 500
 
 
-def delete_report(report_id):
+def reject_report(report_id):
     try:
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute(
             '''
-            DELETE FROM FloodReport
+            UPDATE FloodReport
+            SET Verified = 2
             WHERE ID = %s
             RETURNING ID;
             ''',
@@ -197,6 +198,6 @@ def delete_report(report_id):
         if not row:
             return jsonify({"error": "Report not found"}), 404
 
-        return jsonify({"message": "Report deleted", "report_id": row[0]}), 200
+        return jsonify({"message": "Report rejected", "report_id": row[0]}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

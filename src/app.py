@@ -11,7 +11,7 @@ from .model.report_model import (
     create_flood_report,
     get_all_reports,
     get_unverified_reports,
-    delete_report,
+    reject_report,
     verify_report
     )
 
@@ -171,10 +171,10 @@ def verify_report_api(report_id):
     """
     return verify_report(report_id)
 
-@app.route('/api/unverified_reports/<int:report_id>', methods=['DELETE'])
+@app.route('/api/unverified_reports/<int:report_id>/reject', methods=['PUT'])
 @require_login_and_permission(2)
-def delete_report_api(report_id):
+def reject_report_api(report_id):
     """
-    API route to delete a report.
+    API route to reject a report.
     """
-    return delete_report(report_id)
+    return reject_report(report_id)

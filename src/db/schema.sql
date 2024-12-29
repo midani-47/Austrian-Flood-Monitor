@@ -45,7 +45,7 @@ CREATE TABLE FloodReport (
     Description TEXT, -- Optional description of the flood situation
     LinkToPicture TEXT, -- Optional link to an uploaded picture of the flood
     Severity VARCHAR(50) NOT NULL CHECK (Severity IN ('low', 'medium', 'high', 'catastrophical')), -- Severity of the flood (mandatory)
-    Verified BOOLEAN NOT NULL DEFAULT FALSE -- Indicates whether the report has been verified
+    Verified INTEGER NOT NULL DEFAULT 0 CHECK (Verified IN (0, 1, 2)) -- 0: Unverified, 1: Verified, 2: Rejected
 );
 
 CREATE TABLE EmergencyResponse (
