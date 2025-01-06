@@ -121,11 +121,15 @@ async function createFloodReport(lat, lng, email, phone, description, severity) 
         const result = await response.json();
         console.log('Flood report created:', result);
         alert('Flood report successfully created!');
+
+        // Refresh the page to show the new report
+        location.reload(); // Automatically refresh the page
     } catch (error) {
         console.error('Error creating flood report:', error);
         alert('Failed to create flood report');
     }
 }
+
 
 
 // Fetch and display reports on the map
