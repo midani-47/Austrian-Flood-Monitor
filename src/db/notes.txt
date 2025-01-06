@@ -16,3 +16,35 @@ To restart the flask container:
 docker restart afm_flask_app
 
  UPDATE Users SET perm_level = 4 WHERE user_id = 2; # example of how to change user type
+
+
+What I had to run so that it works after the click on map to make a report implementation: 1 time run:
+
+ ALTER TABLE FloodReport ALTER COLUMN Verified DROP DEFAULT;
+
+ ALTER TABLE FloodReport
+ALTER COLUMN Verified TYPE INTEGER
+USING CASE
+    WHEN Verified THEN 1
+    ELSE 0
+END;
+
+ALTER TABLE FloodReport ALTER COLUMN Verified SET DEFAULT 0;
+
+\d FloodReport  ###### see the table
+
+
+#### test the table
+
+INSERT INTO FloodReport (
+    Location, AssociatedEmail, AssociatedPhoneNumber,
+    Description, Severity, Verified
+)
+VALUES (
+    '47.57743353661921,13.76159291830504',
+    'iclicked@thisplace.com',
+    NULL,
+    'Test Description',
+    'low',
+    0
+);
