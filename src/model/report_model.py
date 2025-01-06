@@ -25,58 +25,47 @@ def create_flood_report():
     Handles the creation of a flood report in the database.
 
     Extracts data from the JSON body of an HTTP POST request, validates required fields,
-    and inserts the data into the `FloodReport` table. The function generates a random
-    placeholder for the `Location` field.
-
-    Returns:
-        flask.Response: A JSON response indicating success or failure of the operation.
+    and inserts the data into the `FloodReport` table.
     """
-
     data = request.json
-
-    # Validate mandatory fields
-    email = data.get('email').strip().lower()
-    severity = data.get('severity')
-    if not email or not severity:
-        return jsonify({"error": "Email and severity are mandatory"}), 400
-    
-    locationOn = data.get('location')
-
-    if(locationOn == "true"):
-        # Get Data from JSON latitude then longitutde
-        location = f"{data.get('lat')},{data.get('long')}"
-    else:
-        # Generate random location placeholder
-        location = f"{random.uniform(47.065415, 48.471273):.6f},{random.uniform(13.073759, 16.372826):.6f}" # todo: could also just do "random location"
-        #city locations:
-        # Vienna: ~48.213568 16.372826
-        # St Pölten: ~48.202119 15.634828
-        # Graz: ~47.065415 15.42632
-        # Salzburg: ~47.805343 13.073759
-        #
-        # min lat: 47.065415, max lat: 48.471273
-        # min long: 13.073759, max long: 16.372826
-        #
-
-    # Optional fields
-    phone_number = data.get('phone_number')
-    user_id = data.get('user_id')
-    description = data.get('description')
-    picture = data.get('picture')  # Assume this is a URL or file path TODO: this has to be fixed later
-
     try:
+        # Extract and validate required fields
+        email = data.get('email').strip().lower()
+        severity = data.get('severity')
+        lat = data.get('lat')
+        lng = data.get('long')
+
+        if not email or not severity:
+            return jsonify({"error": "Email and severity are mandatory"}), 400
+
+        location = f"{lat},{lng}"  # Combine lat/lng into location string
+
+        # Optional fields
+        phone_number = data.get('phone_number')
+        description = data.get('description')
+
+        print("Received data for flood report:", {
+            "email": email,
+            "severity": severity,
+            "location": location,
+            "phone_number": phone_number,
+            "description": description
+        })
+
+        # Insert into the database
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # Insert into database
         cur.execute(
             '''
-            INSERT INTO FloodReport (Location, AssociatedEmail, AssociatedPhoneNumber, AssociatedUserID, 
-                                      Description, LinkToPicture, Severity, Verified)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO FloodReport (
+                Location, AssociatedEmail, AssociatedPhoneNumber, 
+                Description, Severity, Verified
+            )
+            VALUES (%s, %s, %s, %s, %s, %s)
             RETURNING ID;
             ''',
-            (location, email, phone_number, user_id, description, picture, severity, 0)
+            (location, email, phone_number, description, severity, 0)
         )
 
         report_id = cur.fetchone()[0]
@@ -87,7 +76,9 @@ def create_flood_report():
         return jsonify({"message": "Flood report created", "report_id": report_id}), 201
 
     except Exception as e:
+        print(f"Error creating flood report: {str(e)}")  # Log the error for debugging
         return jsonify({"error": str(e)}), 500
+
 
 def get_all_reports():
     """
