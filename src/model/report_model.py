@@ -23,9 +23,6 @@ def get_db_connection():
 def create_flood_report():
     """
     Handles the creation of a flood report in the database.
-
-    Extracts data from the JSON body of an HTTP POST request, validates required fields,
-    and inserts the data into the `FloodReport` table.
     """
     data = request.json
     try:
@@ -41,16 +38,15 @@ def create_flood_report():
         location = f"{lat},{lng}"  # Combine lat/lng into location string
 
         # Optional fields
-        phone_number = data.get('phone_number')
-        description = data.get('description')
+        phone_number = data.get('phone_number') or None
+        description = data.get('description') or None
 
-        print("Received data for flood report:", {
-            "email": email,
-            "severity": severity,
-            "location": location,
-            "phone_number": phone_number,
-            "description": description
-        })
+        print("Processing flood report:")
+        print("Email:", email)
+        print("Severity:", severity)
+        print("Location:", location)
+        print("Phone Number:", phone_number)
+        print("Description:", description)
 
         # Insert into the database
         conn = get_db_connection()
@@ -73,11 +69,13 @@ def create_flood_report():
         cur.close()
         conn.close()
 
+        print(f"Flood report created with ID: {report_id}")
         return jsonify({"message": "Flood report created", "report_id": report_id}), 201
 
     except Exception as e:
-        print(f"Error creating flood report: {str(e)}")  # Log the error for debugging
+        print(f"Error creating flood report: {str(e)}")  # Log the exact error
         return jsonify({"error": str(e)}), 500
+
 
 
 def get_all_reports():

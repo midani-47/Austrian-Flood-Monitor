@@ -4,7 +4,7 @@ const map = L.map('map', {
 }).setView([47.7162, 14.5501], 7); // Center of Austria (default zoom)
 
 // Add MapTiler Basic Map tiles
-L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=IhateThis\n', {
+L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=worked\n', {
   attribution: '&copy; <a href="https://www.maptiler.com/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
 }).addTo(map);
@@ -92,6 +92,10 @@ map.on('contextmenu', (e) => {
 // Function to send a flood report to the backend
 async function createFloodReport(lat, lng, email, phone, description, severity) {
     try {
+        console.log("Sending flood report data:", {
+            lat, lng, email, phone, description, severity
+        });
+
         const response = await fetch('/api/reports', {
             method: 'POST',
             headers: {
@@ -109,6 +113,8 @@ async function createFloodReport(lat, lng, email, phone, description, severity) 
         });
 
         if (!response.ok) {
+            const errorData = await response.json();
+            console.error("Backend error:", errorData.error);
             throw new Error('Failed to create flood report');
         }
 
@@ -120,6 +126,7 @@ async function createFloodReport(lat, lng, email, phone, description, severity) 
         alert('Failed to create flood report');
     }
 }
+
 
 // Fetch and display reports on the map
 async function fetchAndDisplayReports() {
