@@ -1,0 +1,10 @@
+
+flask_mail needs importing, and adding to requirements. (btw we still got two reqs.!)
+
+A 4-week cooldown period after rejection, for either roles
+
+If a user is accepted for level 3, that user can still apply to be depromoted to 2
+
+flash messages, for confirmation or errors, seem timely buggy
+
+logo aint showing in edit_profile although same code

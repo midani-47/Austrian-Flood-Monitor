@@ -26,6 +26,8 @@ from .model.emergency_services import (
 app = Flask(__name__)
 app.secret_key = "YourStrongPassword"  # Required for session handling
 app.register_blueprint(users_bp)  # Register the Blueprint
+app.config['DEBUG'] = True #For development, we can configure Flask to show error tracebacks
+
 
 
 def require_login_and_permission(required_perm_level):
@@ -183,3 +185,26 @@ def reject_report_api(report_id):
     API route to reject a report.
     """
     return reject_report(report_id)
+
+
+@app.route('/profile', methods=['GET'])
+@app.route('/profile/<int:user_id>', methods=['GET'])
+def profile_page(user_id=None):
+    from .model.users import profile_page
+    return profile_page(user_id)
+
+@app.route('/profile/edit', methods=['GET', 'POST'])
+@app.route('/profile/edit/<int:user_id>', methods=['GET', 'POST'])
+def edit_profile(user_id=None):
+    from .model.users import edit_profile
+    return edit_profile(user_id)
+
+@app.route('/request_promotion', methods=['POST'])
+def request_promotion():
+    from .model.users import request_promotion
+    return request_promotion()
+
+@app.route('/api/get_flood_reports', methods=['GET'])
+def getUserReports():
+    from .model.users import get_flood_reports
+    return get_flood_reports()

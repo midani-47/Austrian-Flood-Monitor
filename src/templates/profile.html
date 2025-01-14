@@ -1,0 +1,96 @@
+<!-- profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="dropdown">
+                <button class="dropbtn">Menu</button>
+                <div class="dropdown-content">
+                    {% if perm_level > 1 %}    
+                        <a href="/report">Reports</a>
+                    {% endif %}
+                    {% if perm_level > 2 %}
+                        <a href="/emergencyresponse">Emergency Services</a>
+                    {% endif %}
+                    <a href="#">Option 3</a>
+                </div>
+            </div>
+        </div>
+        <div class="logo">
+            <img src="../static/AFM_logo.png" alt="AFM Logo">
+        </div>
+        <div class="navbar-right">
+            <a href="/report" class="report-button">Report Flood</a>
+            {% if perm_level > 0 %}
+                <span class="user-info">Logged in as: {{ user_email }}</span>
+                {% if perm_level >3 %}
+                <a href="/manage_roles" class="account-link">Manage Roles</a>
+                <a href="/promotion_requests" class="account-link">Promotion Requests</a>
+                {% endif %}
+                <a href="/home" class="account-link">Home</a>
+                <a href="/logout" class="account-link">Logout</a>
+            {% else %}
+                <a href="/login" class="account-link">Login</a>
+                <a href="/register" class="account-link">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h1>User Profile</h1>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="phone_num">Phone Number:</label>
+                <input type="text" id="phone_num" name="phone_num" value="{{ user.phone_num }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="user_address" name="user_address" value="{{ user.user_address }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="role">Current Role:</label>
+                <input type="text" id="user.perm_level" name="perm_level" 
+                       value="{% if user.perm_level == 1 %}User{% elif user.perm_level == 2 %}Moderator
+                              {% elif user.perm_level == 3 %}Emergency Service{% elif user.perm_level == 4 %}Admin
+                              {% else %}Unknown{% endif %}" readonly>
+            </div>
+            
+            <div class="info-group">
+                <label>History of reports:</label>
+                <ul id="flood-reports-list">
+                    <!-- Flood reports will be dynamically loaded here via JavaScript -->
+                </ul>
+            </div>            
+        </form>
+
+        {% if is_admin_view %}
+            <p class="admin-notice">Admin is viewing this profile.</p>
+        {% endif %}
+
+        {% if session.user_id == user.user_id or is_admin_view %}
+            <br>
+            <a href="{{ url_for('Users.edit_profile', user_id=user.user_id) }}" 
+               class="Button" 
+               style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; text-align: center;">
+                Edit Profile
+            </a>
+        {% endif %}
+
+        <div id="user-data" data-user-email="{{ user.email }}" style="display: none;"></div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/profile.js') }}"></script>
+</body>
+</html>

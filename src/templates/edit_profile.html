@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+        <nav class="navbar">
+            <div class="navbar-left">
+                <div class="dropdown">
+                    <button class="dropbtn">Menu</button>
+                    <div class="dropdown-content">
+                        {% if perm_level > 1 %}    
+                            <a href="/report">Reports</a>
+                        {% endif %}
+                        {% if perm_level > 2 %}
+                            <a href="/emergencyresponse">Emergency Services</a>
+                        {% endif %}
+                        <a href="#">Option 3</a>
+                    </div>
+                </div>
+            </div>
+            <div class="logo">
+                <img src="../static/AFM_logo.png" alt="AFM Logo">
+            </div>
+            <div class="navbar-right">
+                <a href="/report" class="report-button">Report Flood</a>
+                {% if perm_level > 0 %}
+                    <span class="user-info">Logged in as: {{ user_email }}</span>
+                    {% if perm_level >3 %}
+                    <a href="/manage_roles" class="account-link">Manage Roles</a>
+                    <a href="/promotion_requests" class="account-link">Promotion Requests</a>
+                    {% endif %}
+                    <a href="/home" class="account-link">Home</a>
+                    <a href="/profile" class="account-link">Profile</a>
+                    <a href="/logout" class="account-link">Logout</a>
+                {% else %}
+                    <a href="/login" class="account-link">Login</a>
+                    <a href="/register" class="account-link">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+        
+    <br><br><div class="container">
+        <h2>User Profile</h2>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="phone_num">Phone Number:</label>
+                <input type="text" id="phone_num" name="phone_num" value="{{ user.phone_num }}">
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="user_address" name="user_address" value="{{ user.user_address }}">
+            </div>
+            <button type="submit" class="btn">Update</button>
+            <hr>
+        </form>
+
+        {% if session.user_id == user.user_id and user.perm_level < 4 %}
+        <div class="promotion-request">
+            <h3>Request Role Promotion</h3>
+            {% if user.last_rejected_on and (now - user.last_rejected_on).days < 28 %}
+                <p>You can request another promotion after {{ 28 - (now - user.last_rejected_on).days }} days.</p>
+            {% else %}
+                <form action="{{ url_for('Users.request_promotion') }}" method="POST">
+                        <select name="requested_role" style="padding: 6px; font-size: 14px; border-radius: 5px; border: 1px solid #ccc;" required>
+
+                        <option value="">Select Role</option>
+                        <option value="2">Moderator</option>
+                        {% if "@gov" in user_email %}
+                            <option value="3">Emergency Service</option>
+                        {% endif %}
+                    </select><br>
+                    <br><button type="submit" style="margin-left: 10px; padding: 8px 16px; font-size: 16px; border-radius: 5px; border: none; background-color: #007bff; color: white; cursor: pointer;">
+                        Request Promotion</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
+        {% if is_admin_view %}
+        <p>Admin is viewing this profile.</p>
+        {% endif %}
+        {% with messages = get_flashed_messages() %}
+
+  {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+        <div class="flash-message">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+
+
+<br><h3>Change Password</h3>
+        <form method="POST">
+            <div class="form-group">
+                <label for="current_password">Current Password:</label>
+                <input type="password" id="current_password" name="current_password" required>
+            </div>
+            <div class="form-group">
+                <label for="new_password">New Password:</label>
+                <input type="password" id="new_password" name="new_password" required>
+            </div>
+            <button type="submit" class="btn">Change Password</button>
+            <hr>
+        </form>
+        
+
+
+    </div>
+</body>
+</html>

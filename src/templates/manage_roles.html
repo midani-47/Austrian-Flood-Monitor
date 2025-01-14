@@ -4,21 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Roles</title>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}"> -->
     <link rel="stylesheet" href="../static/manage_roles.css">
 </head>
 <body>
-    <!-- New, cleaner Home Button -->
-    <a href="{{ url_for('app_home') }}" class="home-button">Home</a>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="dropdown">
+                <button class="dropbtn">Menu</button>
+                <div class="dropdown-content">
+                    {% if perm_level > 1 %}
+                        <a href="/report">Reports</a>
+                    {% endif %}
+                    {% if perm_level > 2 %}
+                        <a href="/emergencyresponse">Emergency Services</a>
+                    {% endif %}
+                    <a href="#">Option 3</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="logo">
+            <img src="../static/AFM_logo.png" alt="AFM Logo">
+        </div>
+
+        <div class="navbar-right">
+            <a href="/report" class="report-button">Report Flood</a>
+            {% if perm_level > 0 %}
+                <!-- <span class="user-info">Logged in as: admin</span> -->
+                {% if perm_level >3 %}
+                <a href="/manage_roles" class="account-link">Manage Roles</a>
+                <a href="/promotion_requests" class="account-link">Promotion Requests</a>
+                {% endif %}
+                <a href="/profile" class="account-link">Profile</a>
+                <a href="/logout" class="account-link">Logout</a>
+            {% else %}
+                <a href="/login" class="account-link">Login</a>
+                <a href="/register" class="account-link">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+    <br><br><br><br>
     <div class="container">
         <div class="header">
             <h1>Manage User Roles</h1>
         </div>
+
+        <!-- Filter Form -->
+        <form method="GET" action="{{ url_for('Users.manage_roles') }}" class="filter-form">
+            <div>
+                <label for="filter_type">Filter by:</label>
+                <select name="filter_type" id="filter_type" style="padding: 8px; font-size: 14px; border-radius: 5px; border: 1px solid #7e93bd;">
+                    <option value="email">Email</option>
+                    <option value="user_id">User ID</option>
+                    <option value="role">Role</option>
+                </select>
+            </div>
+            <div>
+                <label for="filter_value"></label>
+                <input type="text" id="filter_value" name="filter_value" placeholder="Enter value">
+            </div>
+            <button type="submit">Search</button><br><hr>
+                    <!-- Button to List All Users -->
+        <form method="GET" action="{{ url_for('Users.manage_roles') }}">
+            <br><button type="submit">List All Users</button>
+        </form>
+
+        </form>
+
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
                         <th>User ID</th>
                         <th>Email</th>
+                        <th>View Profile</th>
+
                         <th>Current Role</th>
                         <th>Change Role</th>
                     </tr>
@@ -28,8 +89,13 @@
                     <tr>
                         <td>{{ user.user_id }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.perm_level }}</td>
                         <td>
+                            <button type="button" onclick="location.href='{{ url_for('Users.profile_page', user_id=user.user_id) }}'">
+                               Profile
+                            </button>
+                          </td>   
+                        <td>{{     user.perm_level}}</td>
+                     <td>
                             <form method="POST">
                                 <input type="hidden" name="user_id" value="{{ user.user_id }}">
                                 <select name="perm_level">

@@ -38,9 +38,15 @@
         <div class="navbar-right">
             {% if perm_level > 0 %}
                 <span class="user-info">Logged in as: {{ user_email }}</span>
+                {% if perm_level >3 %}
+                <a href="/manage_roles" class="account-link">Manage Roles</a>
+                <a href="/promotion_requests" class="account-link">Promotion Requests</a>
+                {% endif %}
+                <a href="/profile" class="account-link">Profile</a>
                 <a href="/logout" class="account-link">Logout</a>
             {% else %}
                 <a href="/login" class="account-link">Login</a>
+                <a href="/register" class="account-link">Register</a>
             {% endif %}
         </div>
     </nav>

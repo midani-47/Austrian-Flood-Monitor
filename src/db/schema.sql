@@ -99,8 +99,25 @@ CREATE TABLE IF NOT EXISTS Users (
     user_address TEXT,                              -- User's address (text for flexibility in length, can use VARCHAR(255) if needed)
     perm_level int DEFAULT 1 CHECK (perm_level IN (0,1,2,3,4)),        -- Permission level (right now it can be user or admin)
     -- 0: Guest; 1: User; 2: Moderator; 3: Emergency Service; 4: Admin
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp of user creation --> may be used for statistics (if not, it can be easily deleted)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      -- Timestamp of user creation --> may be used for statistics (if not, it can be easily deleted)
+    last_rejected_on TIMESTAMP,
+    ESRejected BOOLEAN DEFAULT FALSE
 );
+
+
+
+-- Create PromotionRequests table if it doesn't exist
+CREATE TABLE IF NOT EXISTS PromotionRequests (
+    request_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES Users(user_id),
+    requested_role INTEGER NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    rejected_on TIMESTAMP,
+    type VARCHAR(20) CHECK (type IN ('Moderator', 'Emergency Service'))
+);
+
 
 -- Insert a default admin user
 Insert into Users (email, hashed_passw, perm_level) 

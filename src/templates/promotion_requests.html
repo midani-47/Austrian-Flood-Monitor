@@ -1,0 +1,119 @@
+<!-- promotion_requests.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotion Requests</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="dropdown">
+                <button class="dropbtn">Menu</button>
+                <div class="dropdown-content">
+                    {% if perm_level > 1 %}    
+                        <a href="/report">Reports</a>
+                    {% endif %}
+                    {% if perm_level > 2 %}
+                        <a href="/emergencyresponse">Emergency Services</a>
+                    {% endif %}
+                    <a href="#">Option 3</a>
+                </div>
+            </div>
+        </div>
+        <div class="logo">
+            <img src="../static/AFM_logo.png" alt="AFM Logo">
+        </div>
+        <div class="navbar-right">
+            <a href="/report" class="report-button">Report Flood</a>
+            {% if perm_level > 0 %}
+                <!-- <span class="user-info">Logged in as: {{ user_email }}</span> -->
+                {% if perm_level >3 %}
+                <a href="/manage_roles" class="account-link">Manage Roles</a>
+                <a href="/promotion_requests" class="account-link">Promotion Requests</a>
+                {% endif %}
+                <a href="/profile" class="account-link">Profile</a>
+                <a href="/home" class="account-link">Home</a>
+                <a href="/logout" class="account-link">Logout</a>
+            {% else %}
+                <a href="/login" class="account-link">Login</a>
+                <a href="/register" class="account-link">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Promotion Requests</h2>
+        
+        <div class="role-filter">
+            <a href="{{ url_for('Users.view_promotion_requests') }}">
+                <button {% if not current_role %}class="active"{% endif %}>All Requests</button>
+            </a><p> </p>
+            <a href="{{ url_for('Users.view_promotion_requests', role=2) }}">
+                <button {% if current_role == 2 %}class="active"{% endif %}>(2) Moderator Requests </button>
+            </a>
+            <a href="{{ url_for('Users.view_promotion_requests', role=3) }}">
+                <button {% if current_role == 3 %}class="active"{% endif %}>(3) Emergency Service Requests</button>
+            </a>
+        </div><br><hr>        
+
+        {% if requests %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Requested Role</th>
+                    <th>Requested At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                <tr>                    
+                    <td>{{ req.email  }}</td>
+                    <td>            {% if req.requested_role == 2 %}
+                        Moderator
+                    {% elif req.requested_role == 3 %}
+                        Emergency Service
+                    {% else %}
+                        Unknown
+                    {% endif %}</td>
+                    <td>{{ req.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        <form action="{{ url_for('Users.handle_promotion_request', request_id=req.request_id) }}" 
+                              method="POST" style="display: inline;">
+                            <input type="hidden" name="action" value="accept">
+                            <button type="submit" class="btn btn-success" style="margin-left: 10px; padding: 2px 2px; font-size: 14px; border-radius: 5px; border: 1px solid #1a9942; background-color: #e7e7e7; color: #1a9942; cursor: pointer;">
+                                Accept</button>
+                        </form>
+                        <form action="{{ url_for('Users.handle_promotion_request', request_id=req.request_id) }}" 
+                              method="POST" style="display: inline;">
+                            <input type="hidden" name="action" value="reject">
+                            <!-- <button type="submit" class="btn btn-danger" style="margin-left: 10px; padding:2px 2px; font-size: 14px; border-radius: 5px;  border: 1px solid #ff3000; background-color: white; color: #ff3000; cursor: pointer;"> -->
+                            <button type="submit" class="btn btn-danger" style="margin-left: 10px; padding:2px 2px; font-size: 14px; border-radius: 5px; border: none; background-color: #ff3000; color: white; cursor: pointer;">
+                                    Reject</button>
+                        </form><hr>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No pending promotion requests.</p>
+        {% endif %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="messages">
+            {% for category, message in messages %}
+            <div class="{{ 'success-message' if category == 'success' else 'error-message' }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
