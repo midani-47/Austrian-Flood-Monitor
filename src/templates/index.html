@@ -24,6 +24,11 @@
                     {% if perm_level == 4 %}
                     <a href="{{ url_for('Users.manage_roles') }}">Manage Users</a>
                     {% endif %}
+                    {% if perm_level == 4 %}
+                    <a href="{{ url_for('Users.view_promotion_requests') }}">Promotion Requests</a>
+                    {% endif %}
+
+
                 </div>
             </div>
             <a href="/report" class="report-button">Report Flood</a>
@@ -38,16 +43,15 @@
         <div class="navbar-right">
             {% if perm_level > 0 %}
                 <span class="user-info">Logged in as: {{ user_email }}</span>
-                {% if perm_level >3 %}
-                <a href="/manage_roles" class="account-link">Manage Roles</a>
-                <a href="/promotion_requests" class="account-link">Promotion Requests</a>
-                {% endif %}
                 <a href="/profile" class="account-link">Profile</a>
                 <a href="/logout" class="account-link">Logout</a>
             {% else %}
+                <div>
                 <a href="/login" class="account-link">Login</a>
+                </div>
                 <a href="/register" class="account-link">Register</a>
             {% endif %}
+                
         </div>
     </nav>
 

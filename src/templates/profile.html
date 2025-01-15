@@ -10,39 +10,23 @@
 </head>
 <body>
     <nav class="navbar">
+        <!-- Left Section: Home Button -->
         <div class="navbar-left">
-            <div class="dropdown">
-                <button class="dropbtn">Menu</button>
-                <div class="dropdown-content">
-                    {% if perm_level > 1 %}    
-                        <a href="/report">Reports</a>
-                    {% endif %}
-                    {% if perm_level > 2 %}
-                        <a href="/emergencyresponse">Emergency Services</a>
-                    {% endif %}
-                    <a href="#">Option 3</a>
-                </div>
-            </div>
+            <a href="/" class="home-button">Home</a>
         </div>
+
+        <!-- Center Section: Logo -->
         <div class="logo">
             <img src="../static/AFM_logo.png" alt="AFM Logo">
         </div>
+
+        <!-- Right Section: Conditional Buttons -->
         <div class="navbar-right">
-            <a href="/report" class="report-button">Report Flood</a>
-            {% if perm_level > 0 %}
-                <span class="user-info">Logged in as: {{ user_email }}</span>
-                {% if perm_level >3 %}
-                <a href="/manage_roles" class="account-link">Manage Roles</a>
-                <a href="/promotion_requests" class="account-link">Promotion Requests</a>
-                {% endif %}
-                <a href="/home" class="account-link">Home</a>
-                <a href="/logout" class="account-link">Logout</a>
-            {% else %}
-                <a href="/login" class="account-link">Login</a>
-                <a href="/register" class="account-link">Register</a>
-            {% endif %}
+            <span class="user-info">Logged in as: {{ session['email'] }}</span>
         </div>
     </nav>
+        
+    
     
     <div class="container">
         <h1>User Profile</h1>

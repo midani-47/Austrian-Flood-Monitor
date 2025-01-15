@@ -7,7 +7,22 @@
     <link rel="stylesheet" href="../static/manage_reports.css">
 </head>
 <body>
-    <a href="{{ url_for('app_home') }}" class="home-button">Home</a>
+    <nav class="navbar">
+        <!-- Left Section: Home Button -->
+        <div class="navbar-left">
+            <a href="/" class="home-button">Home</a>
+        </div>
+
+        <!-- Center Section: Logo -->
+        <div class="logo">
+            <img src="../static/AFM_logo.png" alt="AFM Logo">
+        </div>
+
+        <!-- Right Section: Conditional Buttons -->
+        <div class="navbar-right">
+            <span class="user-info">Logged in as: {{ session['email'] }}</span>
+        </div>
+    </nav>
     <div class="container">
         <div class="header">
             <h1>Manage Unverified Flood Reports</h1>

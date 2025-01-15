@@ -56,104 +56,70 @@ body {
 
 /*navbar settings*/
 
-.navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.navbar-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-.dropbtn {
-    background-color: #3498db;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
+.home-button {
     position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown:hover .dropbtn {
-    background-color: #2980b9;
-}
-
-.user-info {
-    margin-right: 15px;
-    font-weight: bold;
-}
-
-.account-link {
-    margin-left: 10px;
-    text-decoration: none;
-    color: #333;
-}
-
-.account-link:hover {
-    color: #3498db;
-}
-
-
-
-.search-section {
-    margin-bottom: 20px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.search-section form {
-    display: inline-block;
-}
-
-button {
-    padding: 5px 10px;
-    background-color: #007bff;
+    top: 20px;
+    left: 20px;
+    background-color: #e63946;
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-button:hover {
-    background-color: #0056b3;
+.home-button:hover {
+    background-color: #d62828;
+    transform: scale(1.05);
 }
 
+.home-button:active {
+    background-color: #c21d1d;
+    transform: scale(0.98);
+}
 
-  
-.content {
-    width: 100%; 
-  }
+.toggle-btn {
+    background-color: #e63946;
+    color: white;
+    padding: 8px 15px;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background-color: #d62828;
+    transform: scale(1.05);
+}
+
+.toggle-btn:active {
+    background-color: #c21d1d;
+    transform: scale(0.98);
+}
+
+.toggle-btn-grey {
+    background-color: rgba(175, 175, 175);
+    color: white;
+    padding: 8px 15px;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.toggle-btn-grey:hover {
+    background-color: #d62828;
+    transform: scale(1.05);
+}
+
+.toggle-btn-grey:active {
+    background-color: #c21d1d;
+    transform: scale(0.98);
+}
+
 /* Header Styles */
 .header h1 {
     font-size: 2rem;
