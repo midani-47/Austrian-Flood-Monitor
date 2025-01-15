@@ -160,7 +160,10 @@ def home_page():
     user_email = session.get('email', None)  # Get user's email if logged in
     return render_template('index.html', perm_level=int(perm_level), user_email=user_email)
 
-
+def historical_page():
+    perm_level = session.get('perm_level', 0)  # Default to 0 (not logged in)
+    user_email = session.get('email', None)  # Get user's email if logged in
+    return render_template('historical_data.html', perm_level=int(perm_level), user_email=user_email)
 
 @users_bp.route('/login', methods=['GET', 'POST'])
 def login_user():

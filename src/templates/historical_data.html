@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map with Navbar</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    <link rel="stylesheet" href="../static/stylesheet.css">
+</head>
+<body>
+        <!-- Navbar -->
+    <nav class="navbar">
+        <!-- Left Section: Menu -->
+        <div class="navbar-left">
+            <div class="dropdown">
+                <button class="dropbtn">Menu</button>
+                <div class="dropdown-content">
+                    {% if perm_level > 1 %}
+                        <a href="/manage_reports">Manage Reports</a>
+                    {% endif %}
+                    {% if perm_level > 2 %}
+                        <a href="/emergencyresponse">Emergency Services</a>
+                    {% endif %}
+                    {% if perm_level == 4 %}
+                        <a href="{{ url_for('Users.manage_roles') }}">Manage Users</a>
+                    {% endif %}
+                        <a href="/historical_data">Historical Data</a>
+                </div>
+            </div>
+            <a href="/report" class="report-button">Report Flood</a>
+        </div>
+
+        <!-- Logo -->
+        <div class="logo">
+            <img src="../static/AFM_logo.png" alt="AFM Logo">
+        </div>
+
+        <!-- Right Section: Login/Logout -->
+        <div class="navbar-right">
+            {% if perm_level > 0 %}
+                <span class="user-info">Logged in as: {{ user_email }}</span>
+                {% if perm_level >3 %}
+                <a href="/manage_roles" class="account-link">Manage Roles</a>
+                <a href="/promotion_requests" class="account-link">Promotion Requests</a>
+                {% endif %}
+                <a href="/profile" class="account-link">Profile</a>
+                <a href="/logout" class="account-link">Logout</a>
+            {% else %}
+                <a href="/login" class="account-link">Login</a>
+                <a href="/register" class="account-link">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Map -->
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="../static/scripts/historical_data.js"></script>
+</body>
+</html>

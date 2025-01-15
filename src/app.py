@@ -48,7 +48,10 @@ def require_login_and_permission(required_perm_level):
     return decorator
 
 
-
+@app.route("/historical_data")
+def historical_data():
+    from .model.users import historical_page
+    return historical_page()
 
 @app.route("/")
 def hello_world():
