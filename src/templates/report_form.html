@@ -27,6 +27,14 @@
         <form id="flood-report-form">
             <label for="email">Email (Required):</label><br>
             <input type="text" id="email" name="email" required><br><br>
+            <input
+                type="text"
+                id="email"
+                name="email"
+                value="{{ user_email }}"
+                {% if user_email %}readonly{% endif %}
+                required
+            ><br><br>
 
             <label for="phone_number">Phone Number (Optional):</label><br>
             <input type="text" id="phone_number" name="phone_number"><br><br>

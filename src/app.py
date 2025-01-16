@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import Flask, render_template, session, redirect, url_for, flash, request
+from flask import Flask, render_template, session, redirect, url_for, flash, request, jsonify
 from .model.users import users_bp, register_user, login_user, home_page, logout_user, require_role, get_db_connection, get_all_users, update_user_role
 import sys
 import os
@@ -109,6 +109,11 @@ def report_form():
         flask.Response: The rendered HTML form for submitting flood reports.
     """
     return render_template('report_form.html')
+
+@app.route('/api/user_email')
+def get_user_email():
+    user_email = session.get('email', '')  # Get email from session
+    return jsonify({"email": user_email})
 
 
 @app.route('/api/dispatch', methods=['POST'])
