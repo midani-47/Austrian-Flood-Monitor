@@ -1,6 +1,26 @@
 // Log to verify the script is loaded successfully
 console.log("JavaScript loaded successfully!");
 
+document.addEventListener("DOMContentLoaded", async function () {
+    const emailInput = document.getElementById("email");
+
+    try {
+        const response = await fetch('/api/user_email');
+        if (!response.ok) throw new Error('Failed to fetch user email');
+
+        const data = await response.json();
+        const userEmail = data.email;
+
+        if (userEmail) {
+            emailInput.value = userEmail;
+            emailInput.setAttribute("readonly", true); // Make the email field readonly
+            console.log("Email field populated with logged-in user's email.");
+        }
+    } catch (error) {
+        console.error('Error fetching user email:', error);
+    }
+});
+
     const removeFileIcon = document.getElementById("remove-file-icon");
     const fileInput = document.getElementById("picture"); // todo:important for future file handling
 
