@@ -121,7 +121,74 @@ CREATE TABLE IF NOT EXISTS PromotionRequests (
 
 -- Insert a default admin user
 Insert into Users (email, hashed_passw, perm_level) 
-values ('admin@example.com', 'pbkdf2:sha256:1000000$p05Dwd3ap9ogMdkI$7f4e1fcba3da1beec50f690cc57047c4ee81afde904dadb0632a534ed555e3d2', 4)
+values ('admin@example.com', 'pbkdf2:sha256:1000000$p05Dwd3ap9ogMdkI$7f4e1fcba3da1beec50f690cc57047c4ee81afde904dadb0632a534ed555e3d2', 4);
+
+-- First set of users (a@a.com pattern)
+INSERT INTO Users (email, hashed_passw, perm_level) VALUES
+('a@a.com', 'pbkdf2:sha256:1000000$vK9jF8nM$e7c22b37d13be86f12a719188e4817441fd6eb7748a81869b6c012959d51da54', 1),
+('b@a.com', 'pbkdf2:sha256:1000000$pL8kR2xN$f9d33b48c5e21a94f7d8e9b752e6d890a3c12e45b6f89d237c901b436e982f1c', 1),
+('c@a.com', 'pbkdf2:sha256:1000000$mQ7tH4wP$a1b52c63d84e95f607h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9', 1),
+('d@a.com', 'pbkdf2:sha256:1000000$nS6yJ3vL$b2c63d74e85f96g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0', 1),
+('e@a.com', 'pbkdf2:sha256:1000000$kT5xM2bN$c3d74e85f96g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1', 1);
+
+
+INSERT INTO Users (email, hashed_passw, perm_level) VALUES
+('a@gov.com', 'pbkdf2:sha256:1000000$rU9zG4hK$d4e85f96g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2', 1),
+('b@gov.com', 'pbkdf2:sha256:1000000$qV8wH5jM$e5f96g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3', 1),
+('c@gov.com', 'pbkdf2:sha256:1000000$pW7vJ6kN$f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4', 1),
+('d@gov.com', 'pbkdf2:sha256:1000000$oX6uK7mP$g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5', 1),
+('e@gov.com', 'pbkdf2:sha256:1000000$nY5tL8nQ$h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5j6', 1);
+
+
+INSERT INTO PromotionRequests (user_id, requested_role, type)
+SELECT user_id, 2, 'Moderator'
+FROM Users 
+WHERE email LIKE '%@a.com';
+
+
+INSERT INTO PromotionRequests (user_id, requested_role, type)
+SELECT user_id, 3, 'Emergency Service'
+FROM Users 
+WHERE email LIKE '%@gov.com';
+
+
+-- For a@a.com
+INSERT INTO FloodReport (Location, AssociatedEmail, Description, Severity, Verified)
+VALUES 
+    ('47.557433,13.761592', 'a@a.com', 'Flooding near lake shore', 'low', 0),
+    ('47.558123,13.762001', 'a@a.com', 'Water level rising rapidly', 'medium', 0),
+    ('47.556891,13.761123', 'a@a.com', 'Street partially submerged', 'high', 0),
+    ('47.557012,13.760897', 'a@a.com', 'Basement flooding reported', 'medium', 0),
+    ('47.557789,13.761234', 'a@a.com', 'Minor flooding in parking area', 'low', 0);
+
+-- For b@a.com
+INSERT INTO FloodReport (Location, AssociatedEmail, Description, Severity, Verified)
+VALUES 
+    ('47.557901,13.761782', 'b@a.com', 'Water accumulating in town square', 'medium', 0),
+    ('47.558234,13.761123', 'b@a.com', 'Flood warning needed', 'high', 0),
+    ('47.557345,13.760987', 'b@a.com', 'Rising water levels observed', 'medium', 0),
+    ('47.557567,13.761432', 'b@a.com', 'Road becoming impassable', 'high', 0),
+    ('47.557890,13.761654', 'b@a.com', 'Minor flooding near shops', 'low', 0);
+
+-- Similar pattern for other users with varying coordinates and descriptions
+-- For a@gov.com
+INSERT INTO FloodReport (Location, AssociatedEmail, Description, Severity, Verified)
+VALUES 
+    ('47.557433,13.761592', 'a@gov.com', 'Emergency response needed', 'high', 0),
+    ('47.558123,13.762001', 'a@gov.com', 'Critical flooding situation', 'catastrophical', 0),
+    ('47.556891,13.761123', 'a@gov.com', 'Immediate evacuation required', 'high', 0),
+    ('47.557012,13.760897', 'a@gov.com', 'Infrastructure damage reported', 'high', 0),
+    ('47.557789,13.761234', 'a@gov.com', 'Multiple buildings affected', 'catastrophical', 0);
+
+-- Continuing for other emails...
+-- Adding just a few more examples (we can add the rest if needed)
+INSERT INTO FloodReport (Location, AssociatedEmail, Description, Severity, Verified)
+VALUES 
+    ('47.557433,13.761592', 'b@gov.com', 'Emergency assessment required', 'high', 0),
+    ('47.558123,13.762001', 'c@gov.com', 'Critical situation developing', 'catastrophical', 0),
+    ('47.556891,13.761123', 'd@gov.com', 'Urgent response needed', 'high', 0),
+    ('47.557012,13.760897', 'e@gov.com', 'Major flooding event', 'high', 0),
+    ('47.557789,13.761234', 'c@a.com', 'Flood warning issued', 'medium', 0);
 
 -- Log a message to indicate that the schema.sql file has finished executing
 \echo 'Finished executing schema.sql'
