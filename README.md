@@ -25,11 +25,4 @@ The **Austrian Flood Monitoring and Emergency Response System (AFM)** is a web p
 | Real-Time Data         | Integration with government APIs |
 
 
-## Contributors
-Product owner: Markus Zaufl
-
-Scrum master: Heshan Raj
-
-
-
 ### 
