@@ -25,4 +25,12 @@ The **Austrian Flood Monitoring and Emergency Response System (AFM)** is a web p
 | Real-Time Data         | Integration with government APIs |
 
 
-### 
+## Technology Stack
+
+| Participants              | 
+|------------------------|
+| Abed Midani               | 
+| Markus Zaufl                | 
+| Balazs Csaba Madaras                | 
+| Heshan Raj  | 
+| Alexander Savov         |
